@@ -49,7 +49,7 @@ Boolean m_filesystem_init(void)
 	F_SPACE space;
 	rv = f_getfreespace(0, &space);
 	if (rv == F_NO_ERROR) {
-		TRACE_INFO("\t\tSD-FS:   Started.");
+		TRACE_INFO("\tSD-FS:   Started.");
 		TRACE_INFO("Free space: %lu", space.free);
 		TRACE_INFO("Used space: %lu", space.used);
 		TRACE_INFO("Bad  space: %lu", space.bad);
