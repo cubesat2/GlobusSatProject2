@@ -13,6 +13,8 @@
 #include <stdio.h>
 
 
+static const char TEST_FILE[] = "test/kq-test.txt";
+
 static Boolean file_system_freespace(void)
 {
 	F_SPACE space;
@@ -31,7 +33,7 @@ static Boolean file_system_freespace(void)
 static Boolean file_write_test(void)
 {
 	f_mkdir("test");
-	FN_FILE* file = f_open("test/kq-test.txt", "w");
+	FN_FILE* file = f_open(TEST_FILE, "w");
 	if (!file) {
 		printf("Failed on file open\n");
 		printf("Error code: %d\n", f_getlasterror());
@@ -48,7 +50,7 @@ static Boolean file_write_test(void)
 
 static Boolean file_read_test(void)
 {
-	FN_FILE* file = f_open("test/kq-test.txt", "r");
+	FN_FILE* file = f_open(TEST_FILE, "r");
 	if (!file) {
 		printf("Failed on file open\n");
 		return FALSE;
@@ -69,7 +71,7 @@ static Boolean file_read_test(void)
 
 Boolean stdio_file_test(void)
 {
-	FILE* f = fopen("test.txt", "r");
+	FILE* f = fopen(TEST_FILE, "r");
 	char buffer[32] = {0};
 	fread(buffer, 1, 32, f);
 	printf("Read: %s\n", buffer);
