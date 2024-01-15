@@ -10,6 +10,8 @@
 #include "utils/menu_selection.h"
 #include "utils/input.h"
 
+#include "filesystem_tests.h"
+
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>		// printf format codes
@@ -104,6 +106,7 @@ static MenuAction system_menu[] = {
 			{ absolute_of_number_test, "Test absolute value of a number"},
 			{ mul_test, "Test mul of two num"},
 			{ get_number_range_test, "get number in range" },
+			{ filesystem_tests, "File System operations" },
 			MENU_ITEM_END
 };
 

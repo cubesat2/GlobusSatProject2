@@ -11,6 +11,7 @@
 #include "m_gomeps.h"
 #include "m_solar_panels.h"
 #include "m_antenna.h"
+#include "m_filesystem.h"
 
 #include <hal/Drivers/I2C.h>
 #include <at91/utility/trace.h>
@@ -39,6 +40,7 @@ Boolean mm_init()
 	result &= m_gom_eps_init();
 	result &= m_solar_panels_init();
 	result &= m_antenna_init();
+	result &= m_filesystem_init();
 
 	return result;
 }
