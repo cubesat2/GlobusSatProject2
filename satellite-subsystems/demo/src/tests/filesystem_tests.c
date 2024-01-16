@@ -6,7 +6,7 @@
  */
 
 #include "filesystem_tests.h"
-
+#include "utils/input.h"
 #include "utils/menu_selection.h"
 
 #include <hcc/api_fat.h>
@@ -40,8 +40,14 @@ static Boolean file_write_test(void)
 		return FALSE;
 	}
 
-	char buf[] = "ABCDEF";
-	long r = f_write(buf, 1, sizeof(buf), file);
+	printf("Enter the lines you want to add to the file, end with empty line\n");
+	char buffer[80] = {0};
+	do {
+		INPUT_GetSTRING("Line:", buffer, sizeof(buffer));
+		long r = f_write(buffer, 1, sizeof(buffer)-1, file);
+		printf("%ld chars written\n", r);
+	} while (buffer[0] != 0);
+
 	f_close(file);
 
 	printf("File written\n");
@@ -56,8 +62,8 @@ static Boolean file_read_test(void)
 		return FALSE;
 	}
 
-	char buffer[16] = {0};
-	long r = f_read(buffer, 1, 16, file);
+	char buffer[80] = {0};
+	long r = f_read(buffer, 1, sizeof(buffer)-1, file);
 
 	if (r > 0) {
 		printf("Read %ld chars\n", r);
@@ -91,9 +97,6 @@ static MenuAction menu[] = {
 
 Boolean filesystem_tests(void)
 {
-	hcc_mem_init();
-	int r = fs_init();
-
 	MenuDisplay(menu);
 	return TRUE;
 }
