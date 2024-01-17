@@ -48,7 +48,7 @@ static Boolean file_write_test(void)
 	char buffer[80] = {0};
 	do {
 		INPUT_GetSTRING("Line:", buffer, sizeof(buffer));
-		long r = f_write(buffer, sizeof(buffer), 1, file);
+		long r = f_write(buffer, 1, sizeof(buffer), file);
 		printf("%ld chars written\n", r);
 	} while (buffer[0] != 0);
 
@@ -69,7 +69,7 @@ static Boolean file_read_test(void)
 
 	char buffer[80] = {0};
 	for(int i = 0; ; ++i) {
-		int r = f_read(buffer, sizeof(buffer), 1, file);
+		int r = f_read(buffer, 1, sizeof(buffer), file);
 		if (r == 0) {
 			break;
 		} else if ( r < 0) {
@@ -114,9 +114,9 @@ typedef union __attribute__ ((__packed__)) RADFET_Record {
 	unsigned char raw[sizeof(struct RADFET_Record_Fields)]; ///< Unformatted Science payload
 } RADFET_Record;
 
-#define DATA_FOLDER		"data/"
-#define RADFET_DATA 		"radfet.dat"
-#define SEL_DATA		"sel.dat"
+#define DATA_FOLDER		"data"
+#define RADFET_DATA 		"/radfet.dat"
+#define SEL_DATA			"/sel.dat"
 
 Boolean sel_data_save_test(void)
 {
@@ -135,7 +135,7 @@ Boolean sel_data_save_test(void)
 		record.fields.time_stamp = epoch;
 		record.fields.events = i % 10;
 		record.fields.resets = i;
-		long r = f_write(record.raw, sizeof(record), 1, file);
+		long r = f_write(record.raw, 1, sizeof(record), file);
 		if (r != sizeof(record)) {
 			printf("Error while saving record %d\n", i);
 			break;
@@ -173,7 +173,7 @@ Boolean sel_data_read_test(void)
 	f_seek(file, offset, 0);
 
 	for (int i = begin; i <= last; ++i) {
-		int r = f_read(record.raw, sizeof(record), 1, file);
+		int r = f_read(record.raw, 1, sizeof(record), file);
 		if (r != sizeof(record)) {
 			printf("Error reading record %d\n", i);
 			break;
@@ -182,7 +182,7 @@ Boolean sel_data_read_test(void)
 		Time time;
 		Time_convertEpochToTime(record.fields.time_stamp, &time);
 
-		printf("%5d| %4d %02d %02d %02d %02d %02d | %.6d %.4d  ",
+		printf("%5d| %4d %02d %02d %02d %02d %02d | %.6d %.4d\n",
 				i,
 				time.year + 2000,
 				time.month,
