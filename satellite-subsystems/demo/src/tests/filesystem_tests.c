@@ -66,10 +66,12 @@ static Boolean file_read_test(void)
 	for(int i = 0;; ++i) {
 		int r = f_read(buffer, 1, sizeof(buffer)-1, file);
 		if (r == 0) {
+			break;
+		} else if ( r < 0) {
 			printf("\n>> Error code on read: %d\n", f_getlasterror());
 			break;
 		}
-		printf("%d| %*s\n", i, r, buffer);
+		printf("%d| %.*s\n", i, r, buffer);
 	}
 
 	f_close(file);
