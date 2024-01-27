@@ -10,9 +10,11 @@
 #include "utils/input.h"
 #include "utils/timeutils.h"
 #include "utils/menu_selection.h"
+#include "utils/printutils.h"
 
 #include <hal/Timing/Time.h>
 #include <at91/utility/rand.h>
+#include <stdio.h>
 
 
 Boolean init_time(void)
@@ -62,7 +64,7 @@ Boolean get_current_time(void)
 
 Boolean set_current_time(void)
 {
-	const unsigned int epoch_time = 1706788800;
+	unsigned int epoch_time = 1706788800;
 	Time_setUnixEpoch(epoch_time);
 	printf("Time set to:");
 
@@ -79,7 +81,7 @@ Boolean set_current_time(void)
 		print_time(&time);
 		printf("\n");
 	} else {
-		printf("Error setting time: %d\n");
+		printf("Error setting time: %d\n", r);
 	}
 	return TRUE;
 }
