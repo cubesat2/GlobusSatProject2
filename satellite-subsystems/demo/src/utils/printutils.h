@@ -8,11 +8,15 @@
 #ifndef UTILS_PRINTUTILS_H_
 #define UTILS_PRINTUTILS_H_
 
+#include <hal/Timing/Time.h>
+
 /**
  * Print a buffer as hexadecimal bytes
  * @param buffer pointer to data
  * @param length length of data
  */
 void print_hex_array(unsigned char const* buffer, unsigned int length);
+
+void print_time(Time const *time);
 
 #endif /* UTILS_PRINTUTILS_H_ */
