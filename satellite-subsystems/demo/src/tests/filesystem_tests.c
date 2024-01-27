@@ -41,7 +41,7 @@ static Boolean file_write_test(void)
 	if (!file) {
 		printf("Failed on file open\n");
 		printf("Error code: %d\n", f_getlasterror());
-		return FALSE;
+		return TRUE;
 	}
 
 	printf("Enter the lines you want to add to the file, end with empty line\n");
@@ -182,7 +182,7 @@ Boolean sel_data_read_test(void)
 		Time time;
 		Time_convertEpochToTime(record.fields.time_stamp, &time);
 
-		printf("%5d| %4d %02d/%02d H%02d M%02d S%02d | %.6d %.4d\n",
+		printf("%5d| %4d %.2d/%.2d H%.2d M%.2d S%.2d | %d %.6d %.4d\n",
 				i,
 				time.year + 2000,
 				time.month,
@@ -227,6 +227,10 @@ static MenuAction menu[] = {
 
 Boolean filesystem_tests(void)
 {
+	// Thursday, February 1, 2024 12:00:00 PM  GMT
+	const unsigned int epoch_time = 1706788800;
+	Time_setUnixEpoch(epoch_time);
+
 	MenuDisplay(menu);
 	return TRUE;
 }
