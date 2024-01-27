@@ -182,7 +182,8 @@ Boolean sel_data_read_test(void)
 		Time time;
 		Time_convertEpochToTime(record.fields.time_stamp, &time);
 
-		printf("%5d| %4d %.2d/%.2d H%.2d M%.2d S%.2d | %d %.6d %.4d\n",
+		//      i    y   m     d    h     m     s      reset   event
+		printf("%5d| %4d, %.2d/%.2d %.2d:%.2d:%.2d | %.6d %.4d\n",
 				i,
 				time.year + 2000,
 				time.month,
