@@ -31,9 +31,26 @@ static Boolean init_i2c(void)
 	return TRUE;
 }
 
+static Boolean init_time(void)
+{
+	// Thursday, February 1, 2024 1:30:15 PM
+	unsigned int epoch = 1706794215;
+	Time time;
+	Time_convertEpochToTime(epoch, &time);
+	unsigned int syncInterval = 10;
+
+	int result = Time_start(&time, syncInterval);
+	if(result != 0) {
+		TRACE_FATAL("\n\r Time Start failed: %d! \n\r", result);
+			return FALSE;
+	}
+	TRACE_INFO("\t\t\tTime:     Started.");
+	return TRUE;
+}
+
 Boolean mm_init()
 {
-	Boolean result = TRUE;
+	Boolean result = init_time();
 
 	result &= init_i2c();
 	result &= m_trxvu_init();
@@ -41,6 +58,7 @@ Boolean mm_init()
 	result &= m_solar_panels_init();
 	result &= m_antenna_init();
 	result &= m_filesystem_init();
+
 
 	return result;
 }
