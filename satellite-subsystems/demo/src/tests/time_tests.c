@@ -51,20 +51,21 @@ static Boolean get_current_time(void)
 {
 	unsigned int epoch = 0;
 
-	for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < 4; ++i) {
 		int r = Time_getUnixEpoch(&epoch);
 		if (r == 0) {
-			printf("Epoch: %u\n", epoch);
+			printf("Epoch: %u\r\n", epoch);
 
 			Time time;
 			Time_get(&time);
 			printf("Time: ");
 			print_time(&time);
-			printf("\n");
+			printf("\r\n");
 		} else {
 			printf("get time failed\n");
 			break;
 		}
+		delay_ms(500);
 	}
 
 	return TRUE;
