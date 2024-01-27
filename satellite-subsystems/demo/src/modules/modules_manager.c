@@ -12,6 +12,7 @@
 #include "m_solar_panels.h"
 #include "m_antenna.h"
 #include "m_filesystem.h"
+#include "m_time.h"
 
 #include <hal/Drivers/I2C.h>
 #include <at91/utility/trace.h>
@@ -31,22 +32,6 @@ static Boolean init_i2c(void)
 	return TRUE;
 }
 
-static Boolean init_time(void)
-{
-	// Thursday, February 1, 2024 1:30:15 PM
-	unsigned int epoch = 1706794215;
-	Time time;
-	Time_convertEpochToTime(epoch, &time);
-	unsigned int syncInterval = 10;
-
-	int result = Time_start(&time, syncInterval);
-	if(result != 0) {
-		TRACE_FATAL("\n\r Time Start failed: %d! \n\r", result);
-			return FALSE;
-	}
-	TRACE_INFO("\t\t\tTime:     Started.");
-	return TRUE;
-}
 
 Boolean mm_init()
 {

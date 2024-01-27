@@ -17,6 +17,5 @@
  */
 void print_hex_array(unsigned char const* buffer, unsigned int length);
 
-void print_time(Time const *time);
 
 #endif /* UTILS_PRINTUTILS_H_ */

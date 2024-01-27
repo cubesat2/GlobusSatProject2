@@ -17,7 +17,7 @@
 #include <stdio.h>
 
 
-Boolean init_time(void)
+static Boolean init_time(void)
 {
 	Time time;
 	time.year = 24;
@@ -47,7 +47,7 @@ Boolean init_time(void)
 }
 
 
-Boolean get_current_time(void)
+static Boolean get_current_time(void)
 {
 	unsigned int epoch = 0;
 
@@ -71,7 +71,7 @@ Boolean get_current_time(void)
 }
 
 
-Boolean set_current_time(void)
+static Boolean set_current_time(void)
 {
 	printf("Time now is: ");
 
