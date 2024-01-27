@@ -164,7 +164,6 @@ int INPUT_GetINT_MinMax(char const* printStr, int min, int max)
 {
 	for(;;) {
 		int result = INPUT_GetINT32(printStr);
-		printf("Got input: %d\n", result);
 		if ( min <= result && result <= max){
 			return result;
 		}
