@@ -32,6 +32,7 @@ Boolean init_time(void)
 	int r = Time_start(&time, syncInterval);
 	if (r == 0) {
 		printf("Time initialized\n");
+		print_time(&time);
 	} else {
 		printf("Error initing time %d\n", r);
 	}
@@ -45,6 +46,7 @@ Boolean init_time(void)
 	return TRUE;
 }
 
+
 Boolean get_current_time(void)
 {
 	unsigned int epoch = 0;
@@ -53,6 +55,12 @@ Boolean get_current_time(void)
 		int r = Time_getUnixEpoch(&epoch);
 		if (r == 0) {
 			printf("Epoch: %u\n", epoch);
+
+			Time time;
+			Time_get(&time);
+			printf("Time: ");
+			print_time(&time);
+			printf("\n");
 		} else {
 			printf("get time failed\n");
 			break;
@@ -62,18 +70,17 @@ Boolean get_current_time(void)
 	return TRUE;
 }
 
+
 Boolean set_current_time(void)
 {
-	unsigned int epoch_time = 1706788800;
-	Time_setUnixEpoch(epoch_time);
-	printf("Time set to:");
+	printf("Time now is: ");
 
 	Time time;
 	Time_get(&time);
 	print_time(&time);
 	printf("\n");
 
-	epoch_time = INPUT_GetUINT32("Enter new epoch:");
+	unsigned int epoch_time = INPUT_GetUINT32("Enter new epoch:");
 	int r = Time_setUnixEpoch(epoch_time);
 	if (r == 0) {
 		printf("Time set to:");
@@ -85,6 +92,7 @@ Boolean set_current_time(void)
 	}
 	return TRUE;
 }
+
 
 static MenuAction menu[] = {
 		{ init_time, "Initialize Time" },
