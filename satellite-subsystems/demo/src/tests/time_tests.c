@@ -79,7 +79,7 @@ static Boolean set_current_time(void)
 	Time time;
 	Time_get(&time);
 	print_time(&time);
-	printf("\n");
+	printf("\r\n");
 
 	unsigned int epoch_time = INPUT_GetUINT32("Enter new epoch:");
 	int r = Time_setUnixEpoch(epoch_time);
