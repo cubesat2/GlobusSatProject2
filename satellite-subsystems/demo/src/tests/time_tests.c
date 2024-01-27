@@ -50,7 +50,7 @@ Boolean get_current_time(void)
 	for (int i = 0; i < 10; ++i) {
 		int r = Time_getUnixEpoch(&epoch);
 		if (r == 0) {
-			printf("Epoch: %ud\n", epoch);
+			printf("Epoch: %u\n", epoch);
 		} else {
 			printf("get time failed\n");
 			break;
@@ -64,7 +64,23 @@ Boolean set_current_time(void)
 {
 	const unsigned int epoch_time = 1706788800;
 	Time_setUnixEpoch(epoch_time);
+	printf("Time set to:");
 
+	Time time;
+	Time_get(&time);
+	print_time(&time);
+	printf("\n");
+
+	epoch_time = INPUT_GetUINT32("Enter new epoch:");
+	int r = Time_setUnixEpoch(epoch_time);
+	if (r == 0) {
+		printf("Time set to:");
+		Time_get(&time);
+		print_time(&time);
+		printf("\n");
+	} else {
+		printf("Error setting time: %d\n");
+	}
 	return TRUE;
 }
 
