@@ -140,7 +140,7 @@ Boolean sel_data_save_test(void)
 			printf("Error while saving record %d\n", i);
 			break;
 		}
-		delay_ms(10);
+		delay_ms(200);
 	}
 
 	f_close(file);

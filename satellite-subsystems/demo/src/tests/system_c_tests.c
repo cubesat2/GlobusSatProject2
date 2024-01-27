@@ -11,6 +11,7 @@
 #include "utils/input.h"
 
 #include "filesystem_tests.h"
+#include "time_tests.h"
 
 #include <stdio.h>
 #include <stdint.h>
@@ -107,6 +108,7 @@ static MenuAction system_menu[] = {
 			{ mul_test, "Test mul of two num"},
 			{ get_number_range_test, "get number in range" },
 			{ filesystem_tests, "File System operations" },
+			{ time_tests, "Time Tests" },
 			MENU_ITEM_END
 };
 
