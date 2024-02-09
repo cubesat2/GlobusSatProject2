@@ -6,6 +6,8 @@
  */
 
 #include "filesystem_tests.h"
+#include "database_tests.h"
+
 #include "utils/input.h"
 #include "utils/timeutils.h"
 #include "utils/menu_selection.h"
@@ -222,6 +224,7 @@ static MenuAction menu[] = {
 		{ sel_data_save_test, "Simulate SEL data" },
 		{ sel_data_read_test, "Read SEL data" },
 		{ sel_data_delete_test, "Delete SEL data file" },
+		{ database_tests, "DBLog tests" },
 		MENU_ITEM_END
 };
 
