@@ -13,6 +13,7 @@
 
 #include <hal/Timing/Time.h>
 #include <at91/utility/rand.h>
+#include <at91/utility/trace.h>
 #include <hcc/api_fat.h>
 #include <hcc/api_fs_err.h>
 
