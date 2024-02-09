@@ -115,7 +115,7 @@ Boolean db_write_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned i
 	ctx.write_fn = write_fn_wctx;
 	ctx.extra_context = file;
 
-	int res = dblog_init_for_append(&ctx);
+	int res = dblog_write_init(&ctx);
 	if (res != 0) {
 		f_close(file);
 		printf("error dblog_init: %d\n", res);
