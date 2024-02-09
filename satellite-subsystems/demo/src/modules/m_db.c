@@ -152,6 +152,8 @@ Boolean m_db_init(void)
 	for (int i = 0; i < TELEMETRY_TYPES_COUNT; ++i) {
 		f_mkdir(folder_names[i]);
 	}
+
+	TRACE_INFO("\tDBLOG:   Started.");
 	return TRUE;
 }
 

@@ -13,6 +13,7 @@
 #include "m_antenna.h"
 #include "m_filesystem.h"
 #include "m_time.h"
+#include "m_db.h"
 
 #include <hal/Drivers/I2C.h>
 #include <at91/utility/trace.h>
@@ -43,7 +44,7 @@ Boolean mm_init()
 	result &= m_solar_panels_init();
 	result &= m_antenna_init();
 	result &= m_filesystem_init();
-
+	result &= m_db_init();
 
 	return result;
 }
