@@ -128,20 +128,20 @@ double read_double(const byte *ptr) {
 }
 
 
-static char const* make_file_path(DB_TELEMETRY_TYPE telemetry_type, const char* file_name)
+static char const* make_file_path(DB_TELEMETRY_TYPE telemetry_type)
 {
 	static char file_path[64];
 	strcpy(file_path, folder_names[telemetry_type]);
-	strcat(file_path, file_name);
+	strcat(file_path, TELEM_FILE_BASE);
 	//TODO: add time stamp YYMMDD
 
 	return file_path;
 }
 
 
-static F_FILE open_file(DB_TELEMETRY_TYPE telemetry_type, const char* file_name, const char* mode)
+static F_FILE* open_file(DB_TELEMETRY_TYPE telemetry_type, const char* mode)
 {
-	char const* file_path = make_file_path(telemetry_type, file_name);
+	char const* file_path = make_file_path(telemetry_type);
 	// TODO: check if file exists? init for append r+ : init for write w+
 
 	FN_FILE* file = f_open(file_path, mode);
@@ -154,7 +154,7 @@ Boolean db_write_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned i
 	(void)record;
 	(void)record_size;
 
-	FN_FILE* file = open_file(telemetry_type, TELEM_FILE_BASE, "w+");
+	FN_FILE* file = open_file(telemetry_type, "w+");
 	if (!file) {
 		printf("Failed on file open\n");
 		printf("Error code: %d\n", f_getlasterror());
@@ -207,7 +207,7 @@ Boolean db_append_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned 
 	(void)record;
 	(void)record_size;
 
-	FN_FILE* file = open_file(telemetry_type, TELEM_FILE_BASE, "r+");
+	FN_FILE* file = open_file(telemetry_type, "r+");
 	if (!file) {
 		printf("Failed on file open\n");
 		printf("Error code: %d\n", f_getlasterror());
@@ -261,7 +261,7 @@ Boolean db_read_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned in
 	(void)record;
 	(void)record_size;
 
-	FN_FILE* file = open_file(telemetry_type, TELEM_FILE_BASE, "r");
+	FN_FILE* file = open_file(telemetry_type, "r");
 	if (!file) {
 		printf("Failed on file open\n");
 		printf("Error code: %d\n", f_getlasterror());
