@@ -135,7 +135,7 @@ Boolean db_write_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned i
 	strcpy(data_file, folder_names[telemetry_type]);
 	strcat(data_file, "db");
 
-	FN_FILE* file = f_open(data_file, "w+");
+	FN_FILE* file = f_open(data_file, "r+b");
 	if (!file) {
 		printf("Failed on file open\n");
 		printf("Error code: %d\n", f_getlasterror());
@@ -160,7 +160,7 @@ Boolean db_write_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned i
 		return FALSE;
 	}
 
-	for (int i = 0; i < 40; ++i) {
+	for (int i = 0; i < 5; ++i) {
 		unsigned int epoch;
 		Time_getUnixEpoch(&epoch);
 		res = dblog_set_col_val(&ctx, 0, DBLOG_TYPE_INT, &epoch, sizeof(int));
@@ -171,8 +171,8 @@ Boolean db_write_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned i
 		ival = i + 20;
 		res = dblog_set_col_val(&ctx, 2, DBLOG_TYPE_INT, &ival, sizeof(int));
 
-		double dval = 1.0 + (i+1)/100.0;
-		res = dblog_set_col_val(&ctx, 3, DBLOG_TYPE_REAL, &dval, sizeof(int));
+		double dval = 3.141592 + i/42.0;
+		res = dblog_set_col_val(&ctx, 3, DBLOG_TYPE_REAL, &dval, sizeof(double));
 
 		dblog_append_empty_row(&ctx);
 	}
@@ -181,6 +181,65 @@ Boolean db_write_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned i
 	f_close(file);
 	return TRUE;
 }
+
+
+Boolean db_append_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned int record_size)
+{
+	(void)record;
+	(void)record_size;
+
+	char data_file[64];
+	strcpy(data_file, folder_names[telemetry_type]);
+	strcat(data_file, "db");
+
+	FN_FILE* file = f_open(data_file, "r+");
+	if (!file) {
+		printf("Failed on file open\n");
+		printf("Error code: %d\n", f_getlasterror());
+		return FALSE;
+	}
+
+
+	struct dblog_write_context ctx;
+	ctx.buf = buffers[telemetry_type];
+	ctx.col_count = 4;
+	ctx.page_resv_bytes = 0;
+	ctx.page_size_exp = 9;
+	ctx.max_pages_exp = 0;
+	ctx.read_fn = read_fn_wctx;
+	ctx.flush_fn = flush_fn;
+	ctx.write_fn = write_fn_wctx;
+	ctx.extra_context = file;
+
+	int res = dblog_init_for_append(&ctx);
+	if (res != 0) {
+		f_close(file);
+		printf("error dblog_init_for_append: %d\n", res);
+		return FALSE;
+	}
+
+	for (int i = 0; i < 5; ++i) {
+		unsigned int epoch;
+		Time_getUnixEpoch(&epoch);
+		res = dblog_set_col_val(&ctx, 0, DBLOG_TYPE_INT, &epoch, sizeof(int));
+
+		int ival = 100 + i;
+		res = dblog_set_col_val(&ctx, 1, DBLOG_TYPE_INT, &ival, sizeof(int));
+
+		ival = i + 20;
+		res = dblog_set_col_val(&ctx, 2, DBLOG_TYPE_INT, &ival, sizeof(int));
+
+		double dval = 3.1415 + i/42.0;
+		res = dblog_set_col_val(&ctx, 3, DBLOG_TYPE_REAL, &dval, sizeof(double));
+
+		dblog_append_empty_row(&ctx);
+	}
+
+	dblog_finalize(&ctx);
+	f_close(file);
+	return TRUE;
+}
+
 
 Boolean db_read_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned int record_size)
 {
@@ -256,6 +315,13 @@ Boolean db_read_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned in
 }
 
 
+Boolean db_delete_data(DB_TELEMETRY_TYPE telemetry_type)
+{
+	char data_file[64];
+	strcpy(data_file, folder_names[telemetry_type]);
+	strcat(data_file, "db");
+	return f_delete(data_file) == F_NO_ERROR;
+}
 
 Boolean m_db_init(void)
 {

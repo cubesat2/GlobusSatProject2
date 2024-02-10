@@ -19,8 +19,6 @@
 #include <stdio.h>
 
 
-
-
 static Boolean db_write_simple_test(void)
 {
 	if (db_write_data(TELEMETRY_RADFET_PAYLOAD, 0, 0)) {
@@ -31,6 +29,19 @@ static Boolean db_write_simple_test(void)
 
 	return TRUE;
 }
+
+
+static Boolean db_append_simple_test(void)
+{
+	if (db_append_data(TELEMETRY_RADFET_PAYLOAD, 0, 0)) {
+		printf("Pass\n");
+	} else {
+		printf("Fail\n");
+	}
+
+	return TRUE;
+}
+
 
 static Boolean db_read_simple_test(void)
 {
@@ -44,9 +55,23 @@ static Boolean db_read_simple_test(void)
 }
 
 
+static Boolean db_delete_simple_test(void)
+{
+	if (db_delete_data(TELEMETRY_RADFET_PAYLOAD)) {
+		printf("Pass\n");
+	} else {
+		printf("Fail\n");
+	}
+
+	return TRUE;
+}
+
+
 static MenuAction menu[] = {
-		{ db_write_simple_test, "DB write simple" },
-		{ db_read_simple_test, "DB write simple" },
+		{ db_write_simple_test, "DB create+write simple" },
+		{ db_append_simple_test, "DB append simple" },
+		{ db_read_simple_test, "DB read data simple" },
+		{ db_delete_simple_test, "DB delete data simple" },
 
 		MENU_ITEM_END
 };
