@@ -61,6 +61,7 @@ enum {DBLOG_RES_SEEK_ERR = -6, DBLOG_RES_READ_ERR = -7,
 // a database.  The running values need not be supplied
 struct dblog_write_context {
   byte *buf;          // working buffer of size page_size
+  void* extra_context; // pointer to extra context, usually file pointer
   byte col_count;     // No. of columns (whether fits into page is not checked)
   byte page_size_exp; // 9=512, 10=1024 and so on upto 16=65536
   byte max_pages_exp; // Maximum data pages (as exponent of 2) after which
@@ -75,7 +76,6 @@ struct dblog_write_context {
   uint32_t cur_write_rowid;
   byte state;
   int err_no;
-  void* extra_context;
 };
 
 typedef int32_t (*write_fn_def)(struct dblog_write_context *ctx, void *buf, uint32_t pos, size_t len);
@@ -148,6 +148,7 @@ int dblog_recover(struct dblog_write_context *wctx);
 // The running values need not be supplied
 struct dblog_read_context {
   byte *buf;
+  void* extra_context;
   // read_fn should return no. of bytes read
   int32_t (*read_fn)(struct dblog_read_context *ctx, void *buf, uint32_t pos, size_t len);
   // following are running values used internally
@@ -157,7 +158,6 @@ struct dblog_read_context {
   uint16_t cur_rec_pos;
   byte page_size_exp;
   byte page_resv_bytes;
-  void* extra_context;
 };
 
 // Reads a database created using this library,

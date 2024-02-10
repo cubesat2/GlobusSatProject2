@@ -23,8 +23,18 @@
 
 static Boolean db_write_simple_test(void)
 {
-	m_db_init();
 	if (db_write_data(TELEMETRY_RADFET_PAYLOAD, 9, 0)) {
+		printf("Pass\n");
+	} else {
+		printf("Fail\n");
+	}
+
+	return TRUE;
+}
+
+static Boolean db_read_simple_test(void)
+{
+	if (db_read_data(TELEMETRY_RADFET_PAYLOAD, 9, 0)) {
 		printf("Pass\n");
 	} else {
 		printf("Fail\n");
@@ -36,6 +46,7 @@ static Boolean db_write_simple_test(void)
 
 static MenuAction menu[] = {
 		{ db_write_simple_test, "DB write simple" },
+		{ db_read_simple_test, "DB write simple" },
 
 		MENU_ITEM_END
 };
@@ -46,6 +57,8 @@ Boolean database_tests(void)
 	// Thursday, February 1, 2024 12:00:00 PM  GMT
 	const unsigned int epoch_time = 1706788800;
 	Time_setUnixEpoch(epoch_time);
+
+	m_db_init();
 
 	MenuDisplay(menu);
 	return TRUE;

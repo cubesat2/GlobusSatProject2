@@ -24,6 +24,8 @@ typedef enum TELEMETRY_TYPE {
 
 Boolean write_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned int record_size);
 
+Boolean db_read_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned int record_size);
+
 Boolean m_db_init(void);
 
 #endif /* MODULES_M_DB_H_ */
