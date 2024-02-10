@@ -160,22 +160,21 @@ Boolean db_write_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned i
 		return FALSE;
 	}
 
-	for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < 40; ++i) {
 		unsigned int epoch;
 		Time_getUnixEpoch(&epoch);
-		res = dblog_set_col_val(&ctx, 1, DBLOG_TYPE_INT, &epoch, sizeof(int));
+		res = dblog_set_col_val(&ctx, 0, DBLOG_TYPE_INT, &epoch, sizeof(int));
 
 		int ival = 100 + i;
-		res = dblog_set_col_val(&ctx, 2, DBLOG_TYPE_INT, &ival, sizeof(int));
+		res = dblog_set_col_val(&ctx, 1, DBLOG_TYPE_INT, &ival, sizeof(int));
 
 		ival = i + 20;
-		res = dblog_set_col_val(&ctx, 3, DBLOG_TYPE_INT, &ival, sizeof(int));
+		res = dblog_set_col_val(&ctx, 2, DBLOG_TYPE_INT, &ival, sizeof(int));
 
-		double dval = 1.0 + (i+1)/10;
-		res = dblog_set_col_val(&ctx, 4, DBLOG_TYPE_REAL, &dval, sizeof(int));
+		double dval = 1.0 + (i+1)/100.0;
+		res = dblog_set_col_val(&ctx, 3, DBLOG_TYPE_REAL, &dval, sizeof(int));
 
 		dblog_append_empty_row(&ctx);
-		delay_ms(10);
 	}
 
 	dblog_finalize(&ctx);
@@ -214,7 +213,7 @@ Boolean db_read_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned in
 	dblog_read_first_row(&ctx);
 	for (int i = 0; i < 20; ++i) {
 		printf("%.3d | ", i);
-		for (int column = 1; column < 5; ++column) {
+		for (int column = 0; column < 4; ++column) {
 			uint32_t col_type;
 			const byte* col_val = dblog_read_col_val(&ctx, column, &col_type);
 			switch (col_type) {
@@ -233,8 +232,8 @@ Boolean db_read_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned in
 					printf("%d", ival);
 				}
 				break; case 6: {
-					int64_t ival = read_int64(col_val);
-					printf(PRId64, ival);
+					long ival = read_int64(col_val);
+					printf("%ld", ival);
 				}
 				break; case 7: {
 					double dval = read_double(col_val);
