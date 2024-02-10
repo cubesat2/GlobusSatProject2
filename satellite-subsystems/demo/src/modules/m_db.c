@@ -25,6 +25,8 @@
 
 #define BUF_SIZE 512
 
+#define TELEM_FILE_BASE "/db"
+
 static byte buffers[TELEMETRY_TYPES_COUNT][BUF_SIZE];
 
 static struct dblog_write_context write_contexts[TELEMETRY_TYPES_COUNT];
@@ -126,16 +128,33 @@ double read_double(const byte *ptr) {
 }
 
 
+static char const* make_file_path(DB_TELEMETRY_TYPE telemetry_type, const char* file_name)
+{
+	static char file_path[64];
+	strcpy(file_path, folder_names[telemetry_type]);
+	strcat(file_path, file_name);
+	//TODO: add time stamp YYMMDD
+
+	return file_path;
+}
+
+
+static F_FILE open_file(DB_TELEMETRY_TYPE telemetry_type, const char* file_name, const char* mode)
+{
+	char const* file_path = make_file_path(telemetry_type, file_name);
+	// TODO: check if file exists? init for append r+ : init for write w+
+
+	FN_FILE* file = f_open(file_path, mode);
+	return file;
+}
+
+
 Boolean db_write_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned int record_size)
 {
 	(void)record;
 	(void)record_size;
 
-	char data_file[64];
-	strcpy(data_file, folder_names[telemetry_type]);
-	strcat(data_file, "db");
-
-	FN_FILE* file = f_open(data_file, "r+b");
+	FN_FILE* file = open_file(telemetry_type, TELEM_FILE_BASE, "w+");
 	if (!file) {
 		printf("Failed on file open\n");
 		printf("Error code: %d\n", f_getlasterror());
@@ -188,11 +207,7 @@ Boolean db_append_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned 
 	(void)record;
 	(void)record_size;
 
-	char data_file[64];
-	strcpy(data_file, folder_names[telemetry_type]);
-	strcat(data_file, "db");
-
-	FN_FILE* file = f_open(data_file, "r+");
+	FN_FILE* file = open_file(telemetry_type, TELEM_FILE_BASE, "r+");
 	if (!file) {
 		printf("Failed on file open\n");
 		printf("Error code: %d\n", f_getlasterror());
@@ -246,11 +261,7 @@ Boolean db_read_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned in
 	(void)record;
 	(void)record_size;
 
-	char data_file[64];
-	strcpy(data_file, folder_names[telemetry_type]);
-	strcat(data_file, "db");
-
-	FN_FILE* file = f_open(data_file, "r+");
+	FN_FILE* file = open_file(telemetry_type, TELEM_FILE_BASE, "r");
 	if (!file) {
 		printf("Failed on file open\n");
 		printf("Error code: %d\n", f_getlasterror());
@@ -317,10 +328,7 @@ Boolean db_read_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned in
 
 Boolean db_delete_data(DB_TELEMETRY_TYPE telemetry_type)
 {
-	char data_file[64];
-	strcpy(data_file, folder_names[telemetry_type]);
-	strcat(data_file, "db");
-	return f_delete(data_file) == F_NO_ERROR;
+	return f_delete(make_file_path(telemetry_type)) == F_NO_ERROR;
 }
 
 Boolean m_db_init(void)
