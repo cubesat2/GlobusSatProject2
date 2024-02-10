@@ -118,6 +118,14 @@ int64_t read_int64(const byte *ptr) {
 	return ret;
 }
 
+double read_double(const byte *ptr) {
+	double ret;
+	int64_t ival = read_int64(ptr);
+	memcpy(&ret, &ival, sizeof(double));
+	return ret;
+}
+
+
 Boolean db_write_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned int record_size)
 {
 	(void)record;
@@ -184,7 +192,7 @@ Boolean db_read_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned in
 	strcpy(data_file, folder_names[telemetry_type]);
 	strcat(data_file, "db");
 
-	FN_FILE* file = f_open(data_file, "w+");
+	FN_FILE* file = f_open(data_file, "r+");
 	if (!file) {
 		printf("Failed on file open\n");
 		printf("Error code: %d\n", f_getlasterror());
@@ -204,32 +212,45 @@ Boolean db_read_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned in
 	}
 
 	dblog_read_first_row(&ctx);
-	for (int i = 0; i < 10; ++i) {
-		for (int column = 1; column < 4; ++column) {
+	for (int i = 0; i < 20; ++i) {
+		printf("%.3d | ", i);
+		for (int column = 1; column < 5; ++column) {
 			uint32_t col_type;
-			const byte* col_val = dblog_read_col_val(&ctx, 1, &col_type);
+			const byte* col_val = dblog_read_col_val(&ctx, column, &col_type);
 			switch (col_type) {
 				break; case 0:
 					printf("null");
-				break; case 1:
-					printf(PRId8, *((int8_t *)col_val));
+				break; case 1: {
+					int ival = *((int8_t *)col_val);
+					printf("%d", ival);
+				}
 				break; case 2: {
-					int16_t ival = read_int16(col_val);
-					printf(PRId16, ival);
+					int ival = read_int16(col_val);
+					printf("%d", ival);
 				}
 				break; case 4: {
-					int32_t ival = read_int32(col_val);
-					printf(PRId32, ival);
+					int ival = read_int32(col_val);
+					printf("%d", ival);
 				}
 				break; case 6: {
 					int64_t ival = read_int64(col_val);
 					printf(PRId64, ival);
 				}
+				break; case 7: {
+					double dval = read_double(col_val);
+			        printf("%f", dval);
+			        break;
+				}
+				break; default: printf("column of type %d", (int)col_type);
 			}
 
-			dblog_read_next_row(&ctx);
+			printf(" | ");
 		}
+
+		printf("\r\n");
+		dblog_read_next_row(&ctx);
 	}
+
 
 	f_close(file);
 	return TRUE;
