@@ -170,7 +170,6 @@ Boolean db_write_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned i
 		delay_ms(10);
 	}
 
-
 	dblog_finalize(&ctx);
 	f_close(file);
 	return TRUE;
@@ -232,8 +231,6 @@ Boolean db_read_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned in
 		}
 	}
 
-
-	dblog_finalize(&ctx);
 	f_close(file);
 	return TRUE;
 }

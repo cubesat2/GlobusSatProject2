@@ -22,7 +22,7 @@ typedef enum TELEMETRY_TYPE {
 	TELEMETRY_TYPES_COUNT
 } DB_TELEMETRY_TYPE;
 
-Boolean write_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned int record_size);
+Boolean db_write_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned int record_size);
 
 Boolean db_read_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned int record_size);
 

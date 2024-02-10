@@ -23,7 +23,7 @@
 
 static Boolean db_write_simple_test(void)
 {
-	if (db_write_data(TELEMETRY_RADFET_PAYLOAD, 9, 0)) {
+	if (db_write_data(TELEMETRY_RADFET_PAYLOAD, 0, 0)) {
 		printf("Pass\n");
 	} else {
 		printf("Fail\n");
@@ -34,7 +34,7 @@ static Boolean db_write_simple_test(void)
 
 static Boolean db_read_simple_test(void)
 {
-	if (db_read_data(TELEMETRY_RADFET_PAYLOAD, 9, 0)) {
+	if (db_read_data(TELEMETRY_RADFET_PAYLOAD, 0, 0)) {
 		printf("Pass\n");
 	} else {
 		printf("Fail\n");
