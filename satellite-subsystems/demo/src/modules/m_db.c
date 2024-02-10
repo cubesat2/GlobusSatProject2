@@ -48,7 +48,7 @@ static int32_t read_fn_wctx(struct dblog_write_context *ctx, void *buf, uint32_t
 		return DBLOG_RES_READ_ERR;
 	}
 
-	return r;
+	return len;
 }
 
 static int32_t read_fn_rctx(struct dblog_read_context *ctx, void *buf, uint32_t pos, size_t len) {
@@ -62,7 +62,7 @@ static int32_t read_fn_rctx(struct dblog_read_context *ctx, void *buf, uint32_t 
 		return DBLOG_RES_READ_ERR;
 	}
 
-	return r;
+	return len;
 }
 
 static int32_t write_fn_wctx(struct dblog_write_context *ctx, void *buf, uint32_t pos, size_t len) {
@@ -80,7 +80,8 @@ static int32_t write_fn_wctx(struct dblog_write_context *ctx, void *buf, uint32_
 	if (r != F_NO_ERROR) {
 		return DBLOG_RES_FLUSH_ERR;
 	}
-	return r;
+
+	return len;
 }
 
 static int flush_fn(struct dblog_write_context *ctx) {
