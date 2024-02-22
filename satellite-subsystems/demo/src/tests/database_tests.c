@@ -66,12 +66,36 @@ static Boolean db_delete_simple_test(void)
 	return TRUE;
 }
 
+typedef struct SolarTelemetry {
+	unsigned int time_stamp;
+	double temperature;
+} SolarTelemetry;
+
+static Boolean db_blob_simple_test(void)
+{
+	SolarTelemetry solar[3];
+
+	for (int i = 0; i < 3; ++i) {
+		Time_getUnixEpoch(&solar[i].time_stamp);
+		solar[i].temperature = 16.1 + i;
+	}
+
+	if (db_write_data_blob(TELEMETRY_SOLAR, solar, sizeof(SolarTelemetry), 3)) {
+		printf("Pass\n");
+	} else {
+		printf("Fail\n");
+	}
+
+	return TRUE;
+}
+
 
 static MenuAction menu[] = {
 		{ db_write_simple_test, "DB create+write simple" },
 		{ db_append_simple_test, "DB append simple" },
 		{ db_read_simple_test, "DB read data simple" },
 		{ db_delete_simple_test, "DB delete data simple" },
+		{ db_blob_simple_test, "DB Save Blob data" },
 
 		MENU_ITEM_END
 };

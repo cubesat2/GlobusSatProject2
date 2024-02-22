@@ -9,6 +9,7 @@
 #define MODULES_M_DB_H_
 
 #include <hal/boolean.h>
+#include <stddef.h>
 
 
 typedef enum TELEMETRY_TYPE {
@@ -21,6 +22,8 @@ typedef enum TELEMETRY_TYPE {
 
 	TELEMETRY_TYPES_COUNT
 } DB_TELEMETRY_TYPE;
+
+Boolean db_write_data_blob(DB_TELEMETRY_TYPE telemetry_type, void* record, size_t record_size, size_t number_of_records);
 
 Boolean db_write_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned int record_size);
 
