@@ -7,12 +7,13 @@
 
 #include "database_tests.h"
 #include "modules/m_db.h"
+#include "modules/m_time.h"
 
 #include "utils/input.h"
 #include "utils/timeutils.h"
 #include "utils/menu_selection.h"
-
 #include "utils/ulog_sqlite.h"
+
 #include <hal/Timing/Time.h>
 #include <at91/utility/rand.h>
 #include <hcc/api_fat.h>
@@ -71,7 +72,7 @@ typedef struct SolarTelemetry {
 	double temperature;
 } SolarTelemetry;
 
-static Boolean db_blob_simple_test(void)
+static Boolean db_save_blob_test(void)
 {
 	SolarTelemetry solar[3];
 
@@ -89,13 +90,30 @@ static Boolean db_blob_simple_test(void)
 	return TRUE;
 }
 
+static Boolean db_load_blob_test(void)
+{
+	SolarTelemetry solar[3];
+
+	Boolean res = db_read_data_blob(TELEMETRY_SOLAR, solar, sizeof(SolarTelemetry), 3);
+	if (res == FALSE) {
+		printf("Fail\r\n");
+	}
+
+	for (int i = 0; i < 3; ++i) {
+		print_epoch(solar[i].time_stamp);
+		printf("| %d, %f\r\n", solar[i].time_stamp, solar[i].temperature);
+	}
+
+	return TRUE;
+}
 
 static MenuAction menu[] = {
 		{ db_write_simple_test, "DB create+write simple" },
 		{ db_append_simple_test, "DB append simple" },
 		{ db_read_simple_test, "DB read data simple" },
 		{ db_delete_simple_test, "DB delete data simple" },
-		{ db_blob_simple_test, "DB Save Blob data" },
+		{ db_save_blob_test, "DB Save Blob data" },
+		{ db_load_blob_test, "DB Read Blob data" },
 
 		MENU_ITEM_END
 };

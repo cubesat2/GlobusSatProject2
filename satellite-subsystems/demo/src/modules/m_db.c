@@ -6,6 +6,8 @@
  */
 
 #include "m_db.h"
+
+#include "modules/m_time.h"
 #include "utils/ulog_sqlite.h"
 
 #include "utils/timeutils.h"
@@ -152,8 +154,7 @@ Boolean db_write_data_blob(DB_TELEMETRY_TYPE telemetry_type, void* record, size_
 {
 	FN_FILE* file = open_file(telemetry_type, "w+");
 	if (!file) {
-		printf("Failed on file open\n");
-		printf("Error code: %d\n", f_getlasterror());
+		TRACE_ERROR("open file error: %d\r\n", f_getlasterror());
 		return FALSE;
 	}
 
@@ -171,11 +172,11 @@ Boolean db_write_data_blob(DB_TELEMETRY_TYPE telemetry_type, void* record, size_
 	int res = dblog_write_init(&ctx);
 	if (res != 0) {
 		f_close(file);
-		printf("error dblog_init: %d\n", res);
+		TRACE_ERROR("dblog_write_init: %d\r\n", f_getlasterror());
 		return FALSE;
 	}
 
-	for (int i = 0; i < number_of_records; ++i) {
+	for (size_t i = 0; i < number_of_records; ++i) {
 		unsigned int epoch;
 		Time_getUnixEpoch(&epoch);
 		res = dblog_set_col_val(&ctx, 0, DBLOG_TYPE_INT, &epoch, sizeof(int));
@@ -190,6 +191,45 @@ Boolean db_write_data_blob(DB_TELEMETRY_TYPE telemetry_type, void* record, size_
 	return TRUE;
 }
 
+
+Boolean db_read_data_blob(DB_TELEMETRY_TYPE telemetry_type, void* record, size_t record_size, size_t number_of_records)
+{
+	FN_FILE* file = open_file(telemetry_type, "r");
+	if (!file) {
+		TRACE_ERROR("open file error: %d\r\n", f_getlasterror());
+		return FALSE;
+	}
+
+	struct dblog_read_context ctx;
+	ctx.buf = buffers[telemetry_type];
+	ctx.read_fn = read_fn_rctx;
+	ctx.extra_context = file;
+
+	int res = dblog_read_init(&ctx);
+	if (res != 0) {
+		f_close(file);
+		TRACE_ERROR("error dblog_read_init: %d\r\n", res);
+		return FALSE;
+	}
+
+	dblog_read_first_row(&ctx);
+	for (size_t i = 0; i < number_of_records; ++i) {
+		uint32_t col_type;
+		const byte* col_val = dblog_read_col_val(&ctx, 0, &col_type);
+		unsigned int ival = read_int32(col_val);
+		print_epoch(ival);
+		printf("\r\n");
+		memcpy(record, col_val, record_size);
+		record = (char*) record + record_size;
+
+		dblog_read_next_row(&ctx);
+	}
+
+	f_close(file);
+	return TRUE;
+}
+
+
 Boolean db_write_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned int record_size)
 {
 	(void)record;
@@ -197,8 +237,7 @@ Boolean db_write_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned i
 
 	FN_FILE* file = open_file(telemetry_type, "w+");
 	if (!file) {
-		printf("Failed on file open\n");
-		printf("Error code: %d\n", f_getlasterror());
+		TRACE_ERROR("db_write_data: open file error: %d\r\n", f_getlasterror());
 		return FALSE;
 	}
 
@@ -216,7 +255,7 @@ Boolean db_write_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned i
 	int res = dblog_write_init(&ctx);
 	if (res != 0) {
 		f_close(file);
-		printf("error dblog_init: %d\n", res);
+		TRACE_ERROR("error dblog_write_init: %d\r\n", res);
 		return FALSE;
 	}
 
@@ -250,8 +289,7 @@ Boolean db_append_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned 
 
 	FN_FILE* file = open_file(telemetry_type, "r+");
 	if (!file) {
-		printf("Failed on file open\n");
-		printf("Error code: %d\n", f_getlasterror());
+		TRACE_ERROR("Failed on file open: %d\r\n", f_getlasterror());
 		return FALSE;
 	}
 
@@ -270,7 +308,7 @@ Boolean db_append_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned 
 	int res = dblog_init_for_append(&ctx);
 	if (res != 0) {
 		f_close(file);
-		printf("error dblog_init_for_append: %d\n", res);
+		TRACE_ERROR("error dblog_init_for_append: %d\r\n", res);
 		return FALSE;
 	}
 
@@ -304,8 +342,7 @@ Boolean db_read_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned in
 
 	FN_FILE* file = open_file(telemetry_type, "r");
 	if (!file) {
-		printf("Failed on file open\n");
-		printf("Error code: %d\n", f_getlasterror());
+		TRACE_ERROR("error dblog_init_for_append: %d\r\n", f_getlasterror());
 		return FALSE;
 	}
 
@@ -317,7 +354,7 @@ Boolean db_read_data(DB_TELEMETRY_TYPE telemetry_type, void* record, unsigned in
 	int res = dblog_read_init(&ctx);
 	if (res != 0) {
 		f_close(file);
-		printf("error dblog_read_init: %d\n", res);
+		TRACE_ERROR("error dblog_read_init: %d\r\n", res);
 		return FALSE;
 	}
 
@@ -371,6 +408,7 @@ Boolean db_delete_data(DB_TELEMETRY_TYPE telemetry_type)
 {
 	return f_delete(make_file_path(telemetry_type)) == F_NO_ERROR;
 }
+
 
 Boolean m_db_init(void)
 {
