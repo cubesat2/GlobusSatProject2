@@ -40,3 +40,10 @@ void print_time(Time const *time)
 			time->minutes,
 			time->seconds);
 }
+
+void print_epoch(unsigned int epoch)
+{
+	Time time;
+	Time_convertEpochToTime(epoch, &time);
+	print_time(&time);
+}

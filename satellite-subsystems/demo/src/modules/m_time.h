@@ -16,4 +16,7 @@ Boolean init_time(void);
 
 void print_time(Time const *time);
 
+void print_epoch(unsigned int epoch);
+
+
 #endif /* MODULES_M_TIME_H_ */
