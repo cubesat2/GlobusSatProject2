@@ -68,20 +68,22 @@ static Boolean db_delete_simple_test(void)
 }
 
 typedef struct SolarTelemetry {
+	int sequence;
 	unsigned int time_stamp;
 	double temperature;
 } SolarTelemetry;
 
 static Boolean db_save_blob_test(void)
 {
-	SolarTelemetry solar[3];
+	SolarTelemetry solar[4];
 
 	for (int i = 0; i < 3; ++i) {
+		solar[i].sequence = i;
 		Time_getUnixEpoch(&solar[i].time_stamp);
 		solar[i].temperature = 16.1 + i;
 	}
 
-	if (db_write_data_blob(TELEMETRY_SOLAR, solar, sizeof(SolarTelemetry), 3)) {
+	if (db_write_data_blob(TELEMETRY_SOLAR, solar, sizeof(SolarTelemetry), ARRAY_SIZE(solar))) {
 		printf("Pass\n");
 	} else {
 		printf("Fail\n");
@@ -92,14 +94,15 @@ static Boolean db_save_blob_test(void)
 
 static Boolean db_load_blob_test(void)
 {
-	SolarTelemetry solar[3];
+	SolarTelemetry solar[4];
 
-	Boolean res = db_read_data_blob(TELEMETRY_SOLAR, solar, sizeof(SolarTelemetry), 3);
+	Boolean res = db_read_data_blob(TELEMETRY_SOLAR, solar, sizeof(SolarTelemetry), ARRAY_SIZE(solar));
 	if (res == FALSE) {
 		printf("Fail\r\n");
 	}
 
-	for (int i = 0; i < 3; ++i) {
+	for (int i = 0; i < ARRAY_SIZE(solar); ++i) {
+		printf("%d | ", solar[i].sequence);
 		print_epoch(solar[i].time_stamp);
 		printf("| %d, %f\r\n", solar[i].time_stamp, solar[i].temperature);
 	}
@@ -125,8 +128,7 @@ Boolean database_tests(void)
 	const unsigned int epoch_time = 1706788800;
 	Time_setUnixEpoch(epoch_time);
 
-	m_db_init();
-
+	db_delete_data(TELEMETRY_SOLAR);
 	MenuDisplay(menu);
 	return TRUE;
 }
