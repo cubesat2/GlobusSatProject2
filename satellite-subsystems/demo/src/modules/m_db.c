@@ -150,7 +150,7 @@ static F_FILE* open_file(DB_TELEMETRY_TYPE telemetry_type, const char* mode)
 	return file;
 }
 
-Boolean db_write_data_blob(DB_TELEMETRY_TYPE telemetry_type, void* record, size_t record_size, size_t number_of_records)
+size_t db_write_data_blob(DB_TELEMETRY_TYPE telemetry_type, void* record, size_t record_size, size_t number_of_records)
 {
 	FN_FILE* file = open_file(telemetry_type, "w+");
 	if (!file) {
@@ -173,31 +173,79 @@ Boolean db_write_data_blob(DB_TELEMETRY_TYPE telemetry_type, void* record, size_
 	if (res != 0) {
 		f_close(file);
 		TRACE_ERROR("dblog_write_init: %d\r\n", f_getlasterror());
-		return FALSE;
+		return 0;
 	}
 
-	for (size_t i = 0; i < number_of_records; ++i) {
+	size_t i = 0;
+	for (; i < number_of_records; ++i) {
 		unsigned int epoch;
 		Time_getUnixEpoch(&epoch);
 		res = dblog_set_col_val(&ctx, 0, DBLOG_TYPE_INT, &epoch, sizeof(int));
 
 		res = dblog_set_col_val(&ctx, 1, DBLOG_TYPE_BLOB, record, record_size);
+		record = (char*)record + record_size;
 
-		dblog_append_empty_row(&ctx);
+		if (dblog_append_empty_row(&ctx) != DBLOG_RES_OK) {
+			break;
+		}
 	}
 
 	dblog_finalize(&ctx);
 	f_close(file);
-	return TRUE;
+	return i;
 }
 
+size_t db_append_data_blob(DB_TELEMETRY_TYPE telemetry_type, void* record, size_t record_size, size_t number_of_records)
+{
+	FN_FILE* file = open_file(telemetry_type, "r+");
+	if (!file) {
+		TRACE_ERROR("open file error: %d\r\n", f_getlasterror());
+		return FALSE;
+	}
 
-Boolean db_read_data_blob(DB_TELEMETRY_TYPE telemetry_type, void* record, size_t record_size, size_t number_of_records)
+	struct dblog_write_context ctx;
+	ctx.buf = buffers[telemetry_type];
+	ctx.col_count = 2;
+	ctx.page_resv_bytes = 0;
+	ctx.page_size_exp = 9;
+	ctx.max_pages_exp = 0;
+	ctx.read_fn = read_fn_wctx;
+	ctx.flush_fn = flush_fn;
+	ctx.write_fn = write_fn_wctx;
+	ctx.extra_context = file;
+
+	int res = dblog_init_for_append(&ctx);
+	if (res != 0) {
+		f_close(file);
+		TRACE_ERROR("dblog_init_for_append: %d\r\n", f_getlasterror());
+		return 0;
+	}
+
+	size_t i = 0;
+	for (; i < number_of_records; ++i) {
+		unsigned int epoch;
+		Time_getUnixEpoch(&epoch);
+		res = dblog_set_col_val(&ctx, 0, DBLOG_TYPE_INT, &epoch, sizeof(int));
+
+		res = dblog_set_col_val(&ctx, 1, DBLOG_TYPE_BLOB, record, record_size);
+		record = (char*)record + record_size;
+
+		if (dblog_append_empty_row(&ctx) != DBLOG_RES_OK) {
+			break;
+		}
+	}
+
+	dblog_finalize(&ctx);
+	f_close(file);
+	return i;
+}
+
+size_t db_read_data_blob(DB_TELEMETRY_TYPE telemetry_type, void* record, size_t record_size, size_t number_of_records)
 {
 	FN_FILE* file = open_file(telemetry_type, "r");
 	if (!file) {
 		TRACE_ERROR("open file error: %d\r\n", f_getlasterror());
-		return FALSE;
+		return 0;
 	}
 
 	struct dblog_read_context ctx;
@@ -209,26 +257,33 @@ Boolean db_read_data_blob(DB_TELEMETRY_TYPE telemetry_type, void* record, size_t
 	if (res != 0) {
 		f_close(file);
 		TRACE_ERROR("error dblog_read_init: %d\r\n", res);
-		return FALSE;
+		return 0;
 	}
 
 	dblog_read_first_row(&ctx);
-	for (size_t i = 0; i < number_of_records; ++i) {
-		uint32_t col_type;
+	size_t i = 0;
+	for (; i < number_of_records; ++i) {
+		uint32_t col_type = DBLOG_TYPE_INT;
 		const byte* col_val = dblog_read_col_val(&ctx, 0, &col_type);
-		unsigned int ival = read_int32(col_val);
-		ival = read_int32(&ival);
+		if (col_type == 0) {
+			break;
+		}
 
+		unsigned int ival = read_int32(col_val);
 		print_epoch(ival);
 		printf("\r\n");
+
+		col_val = dblog_read_col_val(&ctx, 1, &col_type);
 		memcpy(record, col_val, record_size);
 		record = (char*) record + record_size;
 
-		dblog_read_next_row(&ctx);
+		if (dblog_read_next_row(&ctx) != DBLOG_RES_OK) {
+			break;
+		}
 	}
 
 	f_close(file);
-	return TRUE;
+	return i;
 }
 
 
