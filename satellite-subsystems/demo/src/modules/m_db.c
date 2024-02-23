@@ -217,7 +217,7 @@ Boolean db_read_data_blob(DB_TELEMETRY_TYPE telemetry_type, void* record, size_t
 		uint32_t col_type;
 		const byte* col_val = dblog_read_col_val(&ctx, 0, &col_type);
 		unsigned int ival = read_int32(col_val);
-		ival = read_int32(ival);
+		ival = read_int32(&ival);
 
 		print_epoch(ival);
 		printf("\r\n");
