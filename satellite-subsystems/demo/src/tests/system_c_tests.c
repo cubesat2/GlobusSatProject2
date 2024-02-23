@@ -6,6 +6,7 @@
  */
 
 #include "system_c_tests.h"
+#include "database_tests.h"
 
 #include "utils/menu_selection.h"
 #include "utils/input.h"
@@ -109,6 +110,7 @@ static MenuAction system_menu[] = {
 			{ get_number_range_test, "get number in range" },
 			{ filesystem_tests, "File System operations" },
 			{ time_tests, "Time Tests" },
+			{ database_tests, "DBLog tests" },
 			MENU_ITEM_END
 };
 
