@@ -77,7 +77,12 @@ static int sequence = 100;
 
 static Boolean db_create_blob_test(void)
 {
-	if (db_write_data_blob(TELEMETRY_SOLAR, 0, 0, 0)) {
+	SolarTelemetry solar;
+	solar.sequence = 1;
+	Time_getUnixEpoch(&solar.time_stamp);
+	solar.temperature = 4.2;
+
+	if (db_write_data_blob(TELEMETRY_SOLAR, &solar, sizeof(solar) , 1) == 1) {
 		printf("Pass\n");
 	} else {
 		printf("Fail\n");
@@ -107,15 +112,15 @@ static Boolean db_save_blob_test(void)
 
 static Boolean db_load_blob_test(void)
 {
-	SolarTelemetry solar[10];
+	SolarTelemetry solar[20];
 
-	Boolean res = db_read_data_blob(TELEMETRY_SOLAR, solar, sizeof(SolarTelemetry), 3);
-	if (res == FALSE) {
+	size_t res = db_read_data_blob(TELEMETRY_SOLAR, solar, sizeof(SolarTelemetry), 20);
+	if (res == 0) {
 		printf("Fail\r\n");
 	}
 
-	for (size_t i = 0; i < 3; ++i) {
-		printf("[%d] %d | ", i, solar[i].sequence);
+	for (size_t i = 0; i < res; ++i) {
+		printf("[%.3d] %.3d | ", i, solar[i].sequence);
 		print_epoch(solar[i].time_stamp);
 		printf("| %f\r\n", solar[i].temperature);
 	}
