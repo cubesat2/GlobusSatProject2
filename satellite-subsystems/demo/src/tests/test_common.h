@@ -12,9 +12,11 @@
 #include <hal/errors.h>
 #include <at91/utility/trace.h>
 
+#include <stdio.h>  // for stdout
+
 #include "utils/menu_selection.h"
 
-#define VERIFY(RESULT, formatLiteral, ...)	do { if (RESULT) TRACE_INFO(formatLiteral "Pass!", ## __VA_ARGS__); \
-												 else TRACE_ERROR(formatLiteral "Failed!", ## __VA_ARGS__); } while(0)
+#define VERIFY(RESULT, formatLiteral, ...)	do { if (RESULT) TRACE_INFO(formatLiteral " - Pass!", ## __VA_ARGS__); \
+												 else TRACE_ERROR(formatLiteral " - Failed!", ## __VA_ARGS__); } while(0)
 
 #endif /* TESTS_TEST_COMMON_H_ */
