@@ -27,7 +27,7 @@ Boolean m_antenna_init(void)
 		return FALSE;
 	}
 
-	TRACE_INFO("\t\tANTNS:   Started.");
+	TRACE_INFO("\t\t\tANTNS:   Started.");
 	return TRUE;
 }
 

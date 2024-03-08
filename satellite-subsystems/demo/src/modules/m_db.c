@@ -473,7 +473,7 @@ Boolean m_db_init(void)
 		f_mkdir(folder_names[i]);
 	}
 
-	TRACE_INFO("\tDBLOG:   Started.");
+	TRACE_INFO("\t\t\tDBLOG:   Started.");
 	return TRUE;
 }
 

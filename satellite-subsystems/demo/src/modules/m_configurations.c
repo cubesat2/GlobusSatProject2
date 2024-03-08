@@ -28,7 +28,7 @@ Boolean m_config_init(void)
 		TRACE_ERROR("\n\r FRAM_start() failed; err=%d! Exiting ... \n\r", rv);
 		return FALSE;
 	}
-	TRACE_INFO("\t\tFRAM:   Started.");
+	TRACE_INFO("\t\t\tFRAM:   Started.");
 	return TRUE;
 }
 

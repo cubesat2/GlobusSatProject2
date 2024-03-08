@@ -29,6 +29,7 @@ Boolean m_solar_panels_init(void)
 		TRACE_ERROR("\n\r IsisSolarPanelv2_sleep failed() failed. returned: %d\n\r", rv);
 	}
 
+	TRACE_INFO("\t\t\tSolarPanel:   Started.");
 	return TRUE;
 }
 

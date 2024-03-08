@@ -138,7 +138,7 @@ Boolean m_trxvu_init(void)
 	// Start watch dog kick task
 	xTaskCreate(_WatchDogKickTask,(signed char*)"TRXVU-WDT", 2048, NULL, tskIDLE_PRIORITY, &watchdogKickTaskHandle );
 
-	TRACE_INFO("\t\tTRXVU:   Started.");
+	TRACE_INFO("\t\t\tTRXVU:   Started.");
 	return TRUE;
 }
 
