@@ -5,12 +5,13 @@
  *      Author: Muhammad Zahalqa
  */
 
-#include "solar_panel_tests.h"
-#include "utils/menu_selection.h"
+#include "tests/solar_panel_tests.h"
+#include "tests/test_common.h"
 
 #include "modules/m_solar_panels.h"
 
-Boolean get_solar_panels_sensor_state(void)
+
+static Boolean get_solar_panels_sensor_state(void)
 {
 	if (solar_panels_is_awake()) {
 		printf("The sensors are currently active.");
@@ -20,7 +21,7 @@ Boolean get_solar_panels_sensor_state(void)
 	return TRUE;
 }
 
-Boolean activate_solar_panels_sensor(void)
+static Boolean activate_solar_panels_sensor(void)
 {
 	if (solar_panels_wakeup()) {
 		printf("Solar panel sensors activated.");
@@ -30,7 +31,7 @@ Boolean activate_solar_panels_sensor(void)
 	return TRUE;
 }
 
-Boolean shutdown_solar_panels_sensor(void)
+static Boolean shutdown_solar_panels_sensor(void)
 {
 	if (solar_panels_sleep()) {
 		printf("The sensors have been shutdown.");
@@ -40,7 +41,7 @@ Boolean shutdown_solar_panels_sensor(void)
 	return TRUE;
 }
 
-Boolean get_solar_panels_temperature(void)
+static Boolean get_solar_panels_temperature(void)
 {
 	// we have ISIS_SOLAR_PANEL_COUNT solar panels
 

@@ -10,6 +10,6 @@
 
 #include <hal/boolean.h>
 
-Boolean BeaconTests(void);
+Boolean beacon_tests(void);
 
 #endif /* DEMOS_BEACON_TESTS_H_ */

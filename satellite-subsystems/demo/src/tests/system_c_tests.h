@@ -10,6 +10,6 @@
 
 #include <hal/boolean.h>
 
-Boolean SystemCTest(void);
+Boolean system_C_tests(void);
 
 #endif /* SYSTEMC_TESTS_H_ */

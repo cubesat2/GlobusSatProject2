@@ -9,6 +9,8 @@
 #define DEMOS_MENU_SELECTION_H_
 
 #include <hal/boolean.h>
+#include <stddef.h>
+
 
 Boolean quit_menu();
 typedef Boolean (*MenuActionPtr)(void);

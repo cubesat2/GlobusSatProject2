@@ -6,9 +6,9 @@
  */
 
 
-#include "beacon_tests.h"
+#include "tests/beacon_tests.h"
+#include "tests/test_common.h"
 
-#include "utils/menu_selection.h"
 
 Boolean basic_beacon_message_test(void)
 {
@@ -47,7 +47,7 @@ static MenuAction menu[] = {
 			MENU_ITEM_END
 };
 
-Boolean BeaconTests(void)
+Boolean beacon_tests(void)
 {
 	MenuDisplay(menu);
 	return TRUE;

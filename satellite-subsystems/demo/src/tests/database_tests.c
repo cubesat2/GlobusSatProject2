@@ -5,7 +5,9 @@
  *      Author: tryfinally
  */
 
-#include "database_tests.h"
+#include "tests/database_tests.h"
+#include "tests/test_common.h"
+
 #include "modules/m_db.h"
 #include "modules/m_time.h"
 

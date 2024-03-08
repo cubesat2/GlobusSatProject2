@@ -5,7 +5,9 @@
  *      Author: Muhammad Zahalqa
  */
 
-#include "gom_eps_tests.h"
+#include "tests/gom_eps_tests.h"
+#include "tests/test_common.h"
+
 #include "modules/m_gomeps.h"
 #include "utils/menu_selection.h"
 #include "utils/error_report.h"
@@ -13,6 +15,7 @@
 #include <satellite-subsystems/IsisTRXVU.h>
 
 #include <stdio.h>
+
 
 static Boolean basic_eps_telemetry(void)
 {

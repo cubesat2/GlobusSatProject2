@@ -12,7 +12,7 @@
 #include <at91/utility/trace.h>
 #include <stdio.h>
 
-Boolean init_time(void)
+Boolean m_init_time(void)
 {
 	// Thursday, February 1, 2024 1:30:15 PM
 	unsigned int epoch = 1706794215;

@@ -40,6 +40,8 @@ Boolean m_filesystem_init(void)
 		return FALSE;
 	}
 
+	f_format(0, F_FAT32_MEDIA);
+
 	rv = f_checkvolume(0);
 	if (rv != F_NO_ERROR) {
 		TRACE_ERROR("\n\r f_checkvolume() failed\n\r");

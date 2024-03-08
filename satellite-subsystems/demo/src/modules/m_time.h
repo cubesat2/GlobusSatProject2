@@ -12,7 +12,7 @@
 #include <hal/Timing/Time.h>
 
 
-Boolean init_time(void);
+Boolean m_init_time(void);
 
 void print_time(Time const *time);
 

@@ -7,6 +7,7 @@
 
 #include "modules_manager.h"
 
+#include "m_configurations.h"
 #include "m_trxvu.h"
 #include "m_gomeps.h"
 #include "m_solar_panels.h"
@@ -36,9 +37,10 @@ static Boolean init_i2c(void)
 
 Boolean mm_init()
 {
-	Boolean result = init_time();
+	Boolean result = m_init_time();
 
 	result &= init_i2c();
+	result &= m_config_init();
 	result &= m_trxvu_init();
 	result &= m_gom_eps_init();
 	result &= m_solar_panels_init();

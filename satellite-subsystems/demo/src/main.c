@@ -3,14 +3,8 @@
  *      Author: Akhil
  */
 
-#include "tests/gom_eps_tests.h"
-#include "tests/trxvu_tests.h"
-#include "tests/system_c_tests.h"
-#include "tests/beacon_tests.h"
-#include "tests/solar_panel_tests.h"
-#include "tests/antenna_tests.h"
 
-#include "Demos/demos.h"
+#include "tests/all_tests.h"
 
 #include "modules/modules_manager.h"
 #include "utils/menu_selection.h"
@@ -52,23 +46,7 @@
 	#define MAIN_TRACE_FATAL		TRACE_FATAL
 #endif
 
-static MenuAction main_menu[] = {
-			{ demo_tests, "Demo Tests"},
-			{ BeaconTests, "Beacon Tests"},
-			{ gom_eps_test, "New GOMSpace Tests"},
-			{ trxvu_tests, "New TRXVU Tests"},
-			{ solar_panels_tests, "Solar Panels Tests" },
-			{ antenna_tests, "Antennas Tests" },
-			{ SystemCTest, "System C Tests"},
-			END_OF_MENU
-};
 
-Boolean selectAndExecuteTest()
-{
-	printf("\n\tKafr Qar3 QubeSat Flight Software Testing Software\n");
-	MenuDisplay(main_menu);
-	return TRUE;
-}
 
 void taskMain()
 {
@@ -78,7 +56,7 @@ void taskMain()
 
 	do {
 		LED_toggle(led_1);
-	} while(selectAndExecuteTest());
+	} while(all_tests());
 
 	for(;;) {
 		LED_toggle(led_1);

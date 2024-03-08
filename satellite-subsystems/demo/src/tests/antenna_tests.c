@@ -5,8 +5,8 @@
  *      Author: tryfinally
  */
 
-#include "antenna_tests.h"
-#include "utils/menu_selection.h"
+#include "tests/antenna_tests.h"
+#include "tests/test_common.h"
 
 #include "modules/m_antenna.h"
 

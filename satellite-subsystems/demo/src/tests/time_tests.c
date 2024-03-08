@@ -5,12 +5,15 @@
  *      Author: tryfinally
  */
 
-#include "time_tests.h"
+#include "tests/time_tests.h"
+#include "tests/test_common.h"
 
 #include "utils/input.h"
 #include "utils/timeutils.h"
 #include "utils/menu_selection.h"
 #include "utils/printutils.h"
+
+#include "modules/m_time.h"
 
 #include <hal/Timing/Time.h>
 #include <at91/utility/rand.h>

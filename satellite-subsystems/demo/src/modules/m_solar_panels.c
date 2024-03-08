@@ -14,6 +14,8 @@
 #include <hal/Drivers/SPI.h>
 #include <hal/errors.h>
 
+#include <satellite-subsystems/IsisSolarPanelv2.h>
+
 Boolean m_solar_panels_init(void)
 {
 	int rv = IsisSolarPanelv2_initialize(slave0_spi);

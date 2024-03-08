@@ -5,8 +5,8 @@
  *      Author: Muhammad Zahlqa
  */
 
-#include "system_c_tests.h"
-#include "database_tests.h"
+#include "tests/system_c_tests.h"
+#include "tests/test_common.h"
 
 #include "utils/menu_selection.h"
 #include "utils/input.h"
@@ -108,13 +108,10 @@ static MenuAction system_menu[] = {
 			{ absolute_of_number_test, "Test absolute value of a number"},
 			{ mul_test, "Test mul of two num"},
 			{ get_number_range_test, "get number in range" },
-			{ filesystem_tests, "File System operations" },
-			{ time_tests, "Time Tests" },
-			{ database_tests, "DBLog tests" },
 			MENU_ITEM_END
 };
 
-Boolean SystemCTest(void)
+Boolean system_C_tests(void)
 {
 	MenuDisplay(system_menu);
 	return TRUE;

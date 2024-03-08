@@ -5,8 +5,8 @@
  *      Author: Muhammad Zahalqa
  */
 
-#include "filesystem_tests.h"
-#include "database_tests.h"
+#include "tests/filesystem_tests.h"
+#include "tests/test_common.h"
 
 #include "utils/input.h"
 #include "utils/timeutils.h"
@@ -120,7 +120,7 @@ typedef union __attribute__ ((__packed__)) RADFET_Record {
 #define RADFET_DATA 		"/radfet.dat"
 #define SEL_DATA			"/sel.dat"
 
-Boolean sel_data_save_test(void)
+static Boolean sel_data_save_test(void)
 {
 	f_mkdir(DATA_FOLDER );
 	F_FILE* file = f_open(DATA_FOLDER SEL_DATA, "a");
@@ -152,7 +152,7 @@ Boolean sel_data_save_test(void)
 }
 
 
-Boolean sel_data_read_test(void)
+static Boolean sel_data_read_test(void)
 {
 	int begin = INPUT_GetUINT32("First record to read: ");
 	int last = INPUT_GetUINT32("Last record to read: ");
@@ -203,7 +203,7 @@ Boolean sel_data_read_test(void)
 }
 
 
-Boolean sel_data_delete_test(void)
+static Boolean sel_data_delete_test(void)
 {
 	int r = f_delete(DATA_FOLDER SEL_DATA);
 	if (r == F_NO_ERROR) {
@@ -224,7 +224,6 @@ static MenuAction menu[] = {
 		{ sel_data_save_test, "Simulate SEL data" },
 		{ sel_data_read_test, "Read SEL data" },
 		{ sel_data_delete_test, "Delete SEL data file" },
-		{ database_tests, "DBLog tests" },
 		MENU_ITEM_END
 };
 

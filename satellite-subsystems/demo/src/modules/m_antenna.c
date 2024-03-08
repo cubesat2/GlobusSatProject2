@@ -11,6 +11,8 @@
 #include <hal/errors.h>
 #include <at91/utility/trace.h>
 
+#include <satellite-subsystems/IsisAntS.h>
+
 
 Boolean m_antenna_init(void)
 {

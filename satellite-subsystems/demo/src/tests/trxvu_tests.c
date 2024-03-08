@@ -5,7 +5,9 @@
  *      Author: Muhammad Zahalqa
  */
 
-#include "trxvu_tests.h"
+#include "tests/trxvu_tests.h"
+#include "tests/test_common.h"
+
 #include "modules/m_gomeps.h"
 #include "modules/m_trxvu.h"
 
