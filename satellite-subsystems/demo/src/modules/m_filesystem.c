@@ -52,9 +52,9 @@ Boolean m_filesystem_init(void)
 	rv = f_getfreespace(0, &space);
 	if (rv == F_NO_ERROR) {
 		TRACE_INFO("\t\tSD-FS:   Started.");
-		TRACE_INFO("\t\t\tFree space: %lu", space.free);
-		TRACE_INFO("\t\t\tUsed space: %lu", space.used);
-		TRACE_INFO("\t\t\tBad  space: %lu", space.bad);
+		TRACE_INFO("\t\t\t\tFree space: %lu", space.free);
+		TRACE_INFO("\t\t\t\tUsed space: %lu", space.used);
+		TRACE_INFO("\t\t\t\tBad  space: %lu", space.bad);
 	} else {
 		TRACE_ERROR("\n\r f_getfreespace() failed\n\r");
 	}

@@ -64,12 +64,15 @@ void taskMain()
 	}
 }
 
+//#define DEBUG_BAUD_RATE 115200
+#define DEBUG_BAUD_RATE 200000
+
 int main()
 {
 	unsigned int i;
 	xTaskHandle taskMainHandle;
 
-	TRACE_CONFIGURE_ISP(DBGU_STANDARD, 115200, BOARD_MCK);
+	TRACE_CONFIGURE_ISP(DBGU_STANDARD, DEBUG_BAUD_RATE, BOARD_MCK);
 	// Enable the Instruction cache of the ARM9 core. Keep the MMU and Data Cache disabled.
 	CP15_Enable_I_Cache();
 

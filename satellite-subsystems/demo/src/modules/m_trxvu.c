@@ -79,6 +79,7 @@ TrxvuRxFrame* trxvu_get_frame()
 	static ISIStrxvuRxFrame rxFrameCmd = {0,0,0, rxframebuffer};
 	static TrxvuRxFrame rxframe;
 
+	rxFrameCmd.rx_length = 0;
 	int r = IsisTrxvu_rcGetCommandFrame(0, &rxFrameCmd);
 	if (r == E_NO_SS_ERR) {
 		rxframe.doppler = ((double)rxFrameCmd.rx_doppler) * 13.352 - 22300.0;
