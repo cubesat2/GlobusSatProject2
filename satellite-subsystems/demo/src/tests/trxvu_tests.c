@@ -10,6 +10,7 @@
 
 #include "modules/m_gomeps.h"
 #include "modules/m_trxvu.h"
+#include "modules/spl_command_parser.h"
 
 #include "utils/input.h"
 #include "utils/timeutils.h"
@@ -125,6 +126,19 @@ static Boolean get_incoming_frames_test(void)
 	return TRUE;
 }
 
+static Boolean parse_incoming_spl(void)
+{
+	int frames = trxvu_count_incoming_frames();
+	printf("there are %d incoming messages \n", frames);
+
+	for(int i = 0; i < frames; i++) {
+		TrxvuRxFrame* frame = trxvu_get_frame();
+		spl_parse_command(frame);
+	}
+
+	return TRUE;
+}
+
 static MenuAction menu[] = {
 			{ transmit_fixed_message_test, "Transmit fixed text message" },
 			{ transmit_user_message_test, "Transmit message defined by user" },
@@ -134,6 +148,7 @@ static MenuAction menu[] = {
 			{ automatic_responder_stop_test, "Activate responder for a time interval" },
 			{ set_responder_rssi, "Set Responder RSSI threshold test" },
 			{ get_incoming_frames_test, "Get incoming RX frames test" },
+			{ parse_incoming_spl, "Parse incoming SPL" },
 			MENU_ITEM_END
 };
 
