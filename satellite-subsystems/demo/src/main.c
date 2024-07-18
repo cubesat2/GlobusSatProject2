@@ -65,7 +65,7 @@ void taskMain()
 }
 
 //#define DEBUG_BAUD_RATE 115200
-#define DEBUG_BAUD_RATE 200000
+#define DEBUG_BAUD_RATE 2000000
 
 int main()
 {

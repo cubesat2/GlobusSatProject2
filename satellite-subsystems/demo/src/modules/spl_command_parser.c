@@ -16,16 +16,18 @@ void spl_parse_command(TrxvuRxFrame* frame)
 		return;
 	}
 
-	TrxvuRxFrame* pframe = trxvu_get_frame();
-	if (!pframe) {
+	printf("Frame length: %d \n", frame->length);
+
+	if (frame->length < sizeof(SPL_Header)) {
 		return;
 	}
 
-	if (pframe->length < sizeof(SPL_Header)) {
-		return;
-	}
+	SPL_Packet* packet = (SPL_Packet*) frame->framedata;
+	printf("Sat ID: %d \n", packet->header.ID);
+	printf("Sat Cmd: %d \n", packet->header.cmd_type);
+	printf("Sat SubCmd: %d \n", packet->header.cmd_subtype);
+	printf("Sat Len: %d \n", packet->header.length);
 
-	SPL_Packet* packet = (SPL_Packet*) pframe->framedata;
 	if (packet->header.ID != SAT_MYID || packet->header.ID != SAT_ALLID) {
 		return;
 	}
