@@ -92,6 +92,18 @@ TrxvuRxFrame* trxvu_get_frame()
 	return NULL;
 }
 
+void trxvu_logic(void)
+{
+	int frames = trxvu_count_incoming_frames();
+	printf("there are %d incoming messages \n", frames);
+
+	for(int i = 0; i < frames; i++) {
+		printf("Frame: %d \n", i);
+		TrxvuRxFrame* frame = trxvu_get_frame();
+		spl_parse_command(frame);
+	}
+}
+
 static xTaskHandle watchdogKickTaskHandle = NULL;
 
 static void _WatchDogKickTask(void *parameters)
@@ -106,8 +118,9 @@ static void _WatchDogKickTask(void *parameters)
 	}
 }
 
-static unsigned char from_callsign[] = "TVLKQ1";
-static unsigned char to_callsign[] = "KQ-GND";
+static unsigned char from_callsign[] = "T14KFQ";
+static unsigned char to_callsign[] =   "TAUWKS";
+
 Boolean m_trxvu_init(void)
 {
     // Definition of I2C and TRXUV

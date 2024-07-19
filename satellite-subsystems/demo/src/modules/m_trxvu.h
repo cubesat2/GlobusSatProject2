@@ -74,4 +74,6 @@ int trxvu_count_incoming_frames(void);
  */
 TrxvuRxFrame* trxvu_get_frame();
 
+void trxvu_logic(void);
+
 #endif /* MODULES_M_TRXVU_H_ */

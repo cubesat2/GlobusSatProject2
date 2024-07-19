@@ -46,22 +46,34 @@
 	#define MAIN_TRACE_FATAL		TRACE_FATAL
 #endif
 
+#define  OBC_LAUNCH_TEST_TASK
 
-
-void taskMain()
+void infinite_looper()
 {
-	WDT_startWatchdogKickTask(10 / portTICK_RATE_MS, FALSE);
-
-	mm_init();
-
-	do {
-		LED_toggle(led_1);
-	} while(all_tests());
-
 	for(;;) {
 		LED_toggle(led_1);
 		vTaskDelay(500);
 	}
+}
+
+void taskMain()
+{
+	for (;;) {
+		vTaskDelay(2500);
+		printf("\r\n.... !!! ....\r\n");
+		trxvu_logic();
+	}
+
+	infinite_looper();
+}
+
+void taskTestMain()
+{
+	do {
+		LED_toggle(led_1);
+	} while(all_tests());
+
+	infinite_looper();
 }
 
 //#define DEBUG_BAUD_RATE 115200
@@ -69,9 +81,6 @@ void taskMain()
 
 int main()
 {
-	unsigned int i;
-	xTaskHandle taskMainHandle;
-
 	TRACE_CONFIGURE_ISP(DBGU_STANDARD, DEBUG_BAUD_RATE, BOARD_MCK);
 	// Enable the Instruction cache of the ARM9 core. Keep the MMU and Data Cache disabled.
 	CP15_Enable_I_Cache();
@@ -80,11 +89,10 @@ int main()
 
 	// The actual watchdog is already started, this only initializes the watchdog-kick interface.
 	WDT_start();
-
 	PIO_InitializeInterrupts(AT91C_AIC_PRIOR_LOWEST+4);
+	WDT_startWatchdogKickTask(10 / portTICK_RATE_MS, FALSE);
 
-	printf("\n\nDemo applications for ISIS OBC Satellite Subsystems Library built on %s at %s\n", __DATE__, __TIME__);
-	printf("\nDemo applications use:\n");
+	printf("\n\nT14KFK CubeSat Flight Software. built on %s at %s\n", __DATE__, __TIME__);
 	printf("* Sat Subsys lib version %s.%s.%s built on %s at %s\n",
 			SatelliteSubsystemsVersionMajor, SatelliteSubsystemsVersionMinor, SatelliteSubsystemsVersionRevision,
 			SatelliteSubsystemsCompileDate, SatelliteSubsystemsCompileTime);
@@ -96,8 +104,17 @@ int main()
 	LED_wave(1);
 	LED_waveReverse(1);
 
-	MAIN_TRACE_DEBUG("\t main: Starting main task.. \n\r");
+	mm_init();
+
+	MAIN_TRACE_DEBUG("\t main: Starting tasks... \n\r");
+#ifdef OBC_LAUNCH_TEST_TASK
+	xTaskHandle taskTestMainHandle;
+	xTaskGenericCreate(taskTestMain, (const signed char*)"taskTestMain", 4096, NULL, configMAX_PRIORITIES-2, &taskTestMainHandle, NULL, NULL);
+#endif
+
+	xTaskHandle taskMainHandle;
 	xTaskGenericCreate(taskMain, (const signed char*)"taskMain", 4096, NULL, configMAX_PRIORITIES-2, &taskMainHandle, NULL, NULL);
+
 
 	MAIN_TRACE_DEBUG("\t main: Starting scheduler.. \n\r");
 	vTaskStartScheduler();
@@ -106,7 +123,7 @@ int main()
 	MAIN_TRACE_DEBUG("\t main: Unexpected end of scheduling \n\r");
 
 	//Flash some LEDs for about 100 seconds
-	for (i=0; i < 2500; i++)
+	for (int i=0; i < 2500; i++)
 	{
 		LED_wave(1);
 		MAIN_TRACE_DEBUG("MAIN: STILL ALIVE %d\n\r", i);
