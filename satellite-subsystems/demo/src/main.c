@@ -8,6 +8,7 @@
 
 #include "modules/modules_manager.h"
 #include "modules/m_trxvu.h"
+#include "utils/timeutils.h"
 #include "utils/menu_selection.h"
 
 #include <satellite-subsystems/version/version.h>
@@ -59,8 +60,7 @@ void infinite_looper()
 
 void taskTestMain()
 {
-	mm_init();
-
+	delay_ms(4200);
 	do {
 		LED_toggle(led_1);
 	} while(all_tests());
@@ -78,7 +78,7 @@ void taskMain()
 #endif
 
 	for (;;) {
-		vTaskDelay(2500);
+		delay_ms(200);
 		trxvu_logic();
 	}
 
