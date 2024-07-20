@@ -17,19 +17,21 @@
 
 static void set_rtc(Trx_SetRTC_Args const* args)
 {
-	uint32_t epoch = args->epoch;
+	unsigned int epoch = 0;
 	int r = Time_getUnixEpoch(&epoch);
 	if (r == 0) {
 		printf("\nepoch was: ");
 		m_time_print_epoch(epoch);
+		printf("\r\n");
 	}
 
-	TRACE_DEBUG("\r\nset time to epoch: %" PRIu32 "\n", epoch);
-	m_time_settime(epoch);
-	int r = Time_getUnixEpoch(&epoch);
+	TRACE_DEBUG("\r\nset time to epoch: %" PRIu32 "\n", args->epoch);
+	m_time_settime(args->epoch);
+	r = Time_getUnixEpoch(&epoch);
 	if (r == 0) {
 		printf("\nepoch now: ");
 		m_time_print_epoch(epoch);
+		printf("\r\n");
 	}
 	printf("\n\n");
 }

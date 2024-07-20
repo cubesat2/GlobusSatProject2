@@ -14,8 +14,8 @@
 
 Boolean m_time_init(void)
 {
-	// Thursday, February 1, 2024 1:30:15 PM
-	unsigned int epoch = 1706794215;
+	// Monday, January 1, 2024 12:00:00 PM
+	unsigned int epoch = 1704110400;
 	if (m_time_settime(epoch)) {
 		TRACE_INFO("\t\t\tTime:     Started.");
 	}
