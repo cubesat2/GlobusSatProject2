@@ -6,6 +6,7 @@
  */
 
 #include "m_trxvu.h"
+#include "spl_command_parser.h"
 
 #include "config/i2c_address.h"
 
@@ -59,11 +60,16 @@ Boolean trxvu_set_ax25_bitrate(ISIStrxvuBitrate bitrate)
 	return r == E_NO_SS_ERR;
 }
 
-Boolean trxvu_send_message(unsigned char const* data, unsigned short length)
+Boolean trxvu_send_buffer(uint8_t const* data, uint8_t length)
 {
 	unsigned char availableFrames;
-	int r = IsisTrxvu_tcSendAX25DefClSign(0, (unsigned char*)data, length, &availableFrames);
+	int r = IsisTrxvu_tcSendAX25DefClSign(0, (unsigned char*)data, (unsigned char)length, &availableFrames);
 	return r == E_NO_SS_ERR;
+}
+
+Boolean trxvu_send_message(char const* data, uint8_t length)
+{
+	return trxvu_send_buffer((uint8_t*)data, length);
 }
 
 int trxvu_count_incoming_frames(void)

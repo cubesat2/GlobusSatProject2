@@ -24,7 +24,7 @@
 
 static Boolean transmit_fixed_message_test(void)
 {
-	unsigned char buffer[] = "There's a starman waiting in the sky\n"
+	char buffer[] = "There's a starman waiting in the sky\n"
 							 "He'd like to come and meet us\n"
 							 "But he thinks he'd blow our minds\n"
 							 "CUBESAT: K.Qari3.";
@@ -46,8 +46,8 @@ static Boolean transmit_fixed_message_test(void)
 
 static Boolean transmit_user_message_test(void)
 {
-	unsigned char buffer[81] = {0};
-	INPUT_GetSTRING("What message do you want to send: ", (char*)buffer, 80);
+	char buffer[81] = {0};
+	INPUT_GetSTRING("What message do you want to send: ", buffer, 80);
 	int repeats = INPUT_GetINT8("How many times do you want to send it: ");
 	printf("Will send: %s \r\n", buffer);
 	printf("  repeats: %d \r\n", repeats);

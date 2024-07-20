@@ -5,12 +5,13 @@
  *      Author: tryfinally
  */
 
+#include <stdio.h>
 
 #include "spl_command_parser.h"
 #include "spl_packet.h"
 #include "commands/command_router.h"
 
-#define SAT_ID
+
 void spl_parse_command(TrxvuRxFrame* frame)
 {
 	if (!frame) {

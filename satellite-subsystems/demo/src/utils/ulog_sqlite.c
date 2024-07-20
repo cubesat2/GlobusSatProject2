@@ -1170,7 +1170,7 @@ int dblog_read_next_row(struct dblog_read_context *rctx) {
   uint16_t rec_count = read_uint16(rctx->buf + 3);
   rctx->cur_rec_pos++;
   if (rctx->cur_rec_pos == rec_count) {
-    int32_t page_size = get_pagesize(rctx->page_size_exp);
+//    int32_t page_size = get_pagesize(rctx->page_size_exp);
     rctx->cur_page++;
     if (read_cur_page(rctx))
       return DBLOG_RES_NOT_FOUND;
@@ -1209,7 +1209,7 @@ int dblog_read_last_row(struct dblog_read_context *rctx) {
 // to support low memory systems (2kb ram)
 // The underlying callback function hopefully optimizes repeated IO
 int read_last_val(struct dblog_read_context *rctx, uint32_t pos,
-      int32_t page_size, int col_idx, byte *val_at, int val_len,
+      int32_t page_size, int col_idx, byte *val_at, uint32_t val_len,
       uint32_t *out_col_type, uint16_t *out_rec_pos, byte is_rowid) {
   byte src_buf[12];
   int res = read_bytes_rctx(rctx, src_buf, pos * page_size, 12);
@@ -1382,7 +1382,7 @@ int64_t convert_to_i64(byte *val, int len, byte is_big_endian) {
     }
     case 6:
     case 8:
-      ival_at = (is_big_endian ? read_uint64(val) : *((int64_t *) val));
+      ival_at = (is_big_endian ? (int64_t)read_uint64(val) : *((int64_t *) val));
       break;
     case 1: {
       uint8_t u8_val_at = (is_big_endian ? read_uint8(val) : *((uint8_t *) val));

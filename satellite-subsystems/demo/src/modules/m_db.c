@@ -31,7 +31,7 @@
 
 static byte buffers[TELEMETRY_TYPES_COUNT][BUF_SIZE];
 
-static struct dblog_write_context write_contexts[TELEMETRY_TYPES_COUNT];
+//static struct dblog_write_context write_contexts[TELEMETRY_TYPES_COUNT];
 
 static char folder_names[TELEMETRY_TYPES_COUNT][8] = {
 		"TRXVU",

@@ -10,14 +10,19 @@
 
 #include "modules/spl_packet.h"
 
-typedef struct __attribute__ ((__packed__)) Cmd_SetRTC_Args {
-	uint32_t epoch;
-} Cmd_SetRTC_Args;
+typedef enum __attribute__ ((__packed__)) TRXVU_Command_SubType {
+	TRXVU_CMD_PING, //0
+	TRXVU_CMD_SETTIME, //1
+} TRXVU_Command_SubType;
 
-typedef struct __attribute__ ((__packed__)) Cmd_Ping_Args {
+typedef struct __attribute__ ((__packed__)) Trx_SetRTC_Args {
+	uint32_t epoch;
+} Trx_SetRTC_Args;
+
+typedef struct __attribute__ ((__packed__)) Trx_Ping_Args {
 	uint8_t message_length;
 	char message[];
-} Cmd_Ping_Args;
+} Trx_Ping_Args;
 
 
 void trxvu_command_router(SPL_Packet const* packet);

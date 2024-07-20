@@ -7,6 +7,7 @@
 #include "tests/all_tests.h"
 
 #include "modules/modules_manager.h"
+#include "modules/m_trxvu.h"
 #include "utils/menu_selection.h"
 
 #include <satellite-subsystems/version/version.h>
