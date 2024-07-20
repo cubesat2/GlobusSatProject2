@@ -79,7 +79,6 @@ void taskMain()
 
 	for (;;) {
 		vTaskDelay(2500);
-		MAIN_TRACE_DEBUG("\r\n.... !!! ....\r\n");
 		trxvu_logic();
 	}
 
