@@ -117,10 +117,6 @@ int main()
 
 
 	MAIN_TRACE_INFO("\t main: Starting tasks... \n\r");
-#ifdef OBC_LAUNCH_TEST_TASK
-	xTaskHandle taskTestMainHandle;
-	xTaskGenericCreate(taskTestMain, (const signed char*)"taskTestMain", 4096, NULL, configMAX_PRIORITIES-2, &taskTestMainHandle, NULL, NULL);
-#endif
 
 	xTaskHandle taskMainHandle;
 	xTaskGenericCreate(taskMain, (const signed char*)"taskMain", 4096, NULL, configMAX_PRIORITIES-2, &taskMainHandle, NULL, NULL);
