@@ -104,7 +104,6 @@ void trxvu_logic(void)
 	printf("there are %d incoming messages \n", frames);
 
 	for(int i = 0; i < frames; i++) {
-		printf("Frame: %d \n", i);
 		TrxvuRxFrame* frame = trxvu_get_frame();
 		spl_parse_command(frame);
 	}

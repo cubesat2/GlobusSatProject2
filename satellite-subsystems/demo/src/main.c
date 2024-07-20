@@ -57,25 +57,36 @@ void infinite_looper()
 	}
 }
 
-void taskMain()
-{
-	for (;;) {
-		vTaskDelay(2500);
-		printf("\r\n.... !!! ....\r\n");
-		trxvu_logic();
-	}
-
-	infinite_looper();
-}
-
 void taskTestMain()
 {
+	mm_init();
+
 	do {
 		LED_toggle(led_1);
 	} while(all_tests());
 
 	infinite_looper();
 }
+
+void taskMain()
+{
+	mm_init();
+
+#ifdef OBC_LAUNCH_TEST_TASK
+	xTaskHandle taskTestMainHandle;
+	xTaskGenericCreate(taskTestMain, (const signed char*)"taskTestMain", 4096, NULL, configMAX_PRIORITIES-2, &taskTestMainHandle, NULL, NULL);
+#endif
+
+	for (;;) {
+		vTaskDelay(2500);
+		MAIN_TRACE_DEBUG("\r\n.... !!! ....\r\n");
+		trxvu_logic();
+	}
+
+	infinite_looper();
+}
+
+
 
 //#define DEBUG_BAUD_RATE 115200
 #define DEBUG_BAUD_RATE 2000000
@@ -105,9 +116,8 @@ int main()
 	LED_wave(1);
 	LED_waveReverse(1);
 
-	mm_init();
 
-	MAIN_TRACE_DEBUG("\t main: Starting tasks... \n\r");
+	MAIN_TRACE_INFO("\t main: Starting tasks... \n\r");
 #ifdef OBC_LAUNCH_TEST_TASK
 	xTaskHandle taskTestMainHandle;
 	xTaskGenericCreate(taskTestMain, (const signed char*)"taskTestMain", 4096, NULL, configMAX_PRIORITIES-2, &taskTestMainHandle, NULL, NULL);
@@ -121,7 +131,7 @@ int main()
 	vTaskStartScheduler();
 
 	// This part should never be reached.
-	MAIN_TRACE_DEBUG("\t main: Unexpected end of scheduling \n\r");
+	MAIN_TRACE_ERROR("\t main: Unexpected end of scheduling \n\r");
 
 	//Flash some LEDs for about 100 seconds
 	for (int i=0; i < 2500; i++)

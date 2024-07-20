@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <inttypes.h>
 
+#include <at91/utility/trace.h>
+
 #include "commands.h"
 #include "../command_router.h"
 
@@ -15,13 +17,15 @@
 static void set_rtc(Trx_SetRTC_Args const* args)
 {
 	uint32_t epoch = args->epoch;
-	printf("set time to epoch: %" PRIu32 "\n", epoch);
+	TRACE_DEBUG("set time to epoch: %" PRIu32 "\n", epoch);
+	// TODO: set time
 }
 
 static void ping(Trx_Ping_Args const* args)
 {
 	int len = args->message_length;
-	printf("Ping: %.*s\r\n", len, args->message);
+	TRACE_DEBUG("Ping: %.*s\r\n", len, args->message);
+	// TODO: send pong
 }
 
 void trxvu_command_router(SPL_Packet const* packet)
