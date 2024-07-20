@@ -16,8 +16,14 @@ Boolean m_time_init(void)
 {
 	// Monday, January 1, 2024 12:00:00 PM
 	unsigned int epoch = 1704110400;
-	if (m_time_settime(epoch)) {
-		TRACE_INFO("\t\t\tTime:     Started.");
+	unsigned int syncInterval = 60;
+
+	Time time;
+	Time_convertEpochToTime(epoch, &time);
+	int result = Time_start(&time, syncInterval);
+	if(result != 0) {
+		TRACE_FATAL("\n\r Time Start failed: %d! \n\r", result);
+		return FALSE;
 	}
 	return TRUE;
 }
@@ -28,11 +34,9 @@ Boolean m_time_settime(uint32_t epoch)
 
 	unsigned int syncInterval = 60;
 
-	Time time;
-	Time_convertEpochToTime(epoch, &time);
-	int result = Time_start(&time, syncInterval);
+	int result = Time_setUnixEpoch(epoch);
 	if(result != 0) {
-		TRACE_FATAL("\n\r Time Start failed: %d! \n\r", result);
+		TRACE_FATAL("\n\r Set Time failed: %d! \n\r", result);
 		return FALSE;
 	}
 	return TRUE;

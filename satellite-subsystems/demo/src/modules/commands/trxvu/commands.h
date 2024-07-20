@@ -26,7 +26,7 @@ typedef struct __attribute__ ((__packed__)) Trx_Ping_Args {
 
 //             Cmd  SubCommand
 // ID:14       TRX  SETTIME
-// 0E 00 00 00 00   01       04  27	AF 9B 66
+// 0E 00 00 00 00   08       04  F0	B1 9B 66
 //    Sequence               LEN DATA epoch = 1721478951
 // Frame sent:
 //  82 98 98 40 40 40 E0 68 F0 68 D0 E6 C6 61 03 F0 14 00 00 00 00 01 04 00 12 34 56 78 47 6D
