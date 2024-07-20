@@ -12,10 +12,20 @@
 #include <at91/utility/trace.h>
 #include <stdio.h>
 
-Boolean m_init_time(void)
+Boolean m_time_init(void)
 {
 	// Thursday, February 1, 2024 1:30:15 PM
 	unsigned int epoch = 1706794215;
+	if (m_time_settime(epoch)) {
+		TRACE_INFO("\t\t\tTime:     Started.");
+	}
+	return TRUE;
+}
+
+
+Boolean m_time_settime(uint32_t epoch)
+{
+
 	unsigned int syncInterval = 60;
 
 	Time time;
@@ -23,13 +33,12 @@ Boolean m_init_time(void)
 	int result = Time_start(&time, syncInterval);
 	if(result != 0) {
 		TRACE_FATAL("\n\r Time Start failed: %d! \n\r", result);
-			return FALSE;
+		return FALSE;
 	}
-	TRACE_INFO("\t\t\tTime:     Started.");
 	return TRUE;
 }
 
-void print_time(Time const *time)
+void m_time_print_time(Time const *time)
 {
 		//  y   m     d    h     m     s
 	printf("%4d, %.2d/%.2d %.2d:%.2d:%.2d",
@@ -41,9 +50,9 @@ void print_time(Time const *time)
 			time->seconds);
 }
 
-void print_epoch(unsigned int epoch)
+void m_time_print_epoch(unsigned int epoch)
 {
 	Time time;
 	Time_convertEpochToTime(epoch, &time);
-	print_time(&time);
+	m_time_print_time(&time);
 }

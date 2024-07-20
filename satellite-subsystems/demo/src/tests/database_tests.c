@@ -123,7 +123,7 @@ static Boolean db_load_blob_test(void)
 
 	for (size_t i = 0; i < res; ++i) {
 		printf("[%.3d] %.3d | ", i, solar[i].sequence);
-		print_epoch(solar[i].time_stamp);
+		m_time_print_epoch(solar[i].time_stamp);
 		printf("| %f\r\n", solar[i].temperature);
 	}
 

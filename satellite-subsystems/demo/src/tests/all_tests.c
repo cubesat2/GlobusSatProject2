@@ -33,7 +33,7 @@ static MenuAction main_menu[] = {
 
 Boolean all_tests(void)
 {
-	TRACE_INFO("\r\n\r\n\tKafr Qar3 QubeSat Flight Software Testing Software.\r\n");
+	TRACE_INFO("KFQ14 testing task ready!\r\n\r\n\tQubeSat Flight Software Testing Software.\r\n");
 	MenuDisplay(main_menu);
 	return TRUE;
 }

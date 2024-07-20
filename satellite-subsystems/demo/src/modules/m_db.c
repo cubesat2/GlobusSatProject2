@@ -270,7 +270,7 @@ size_t db_read_data_blob(DB_TELEMETRY_TYPE telemetry_type, void* record, size_t 
 		}
 
 		unsigned int ival = read_int32(col_val);
-		print_epoch(ival);
+		m_time_print_epoch(ival);
 		printf("\r\n");
 
 		col_val = dblog_read_col_val(&ctx, 1, &col_type);

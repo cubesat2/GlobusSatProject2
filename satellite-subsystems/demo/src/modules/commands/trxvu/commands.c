@@ -10,6 +10,7 @@
 
 #include <at91/utility/trace.h>
 
+#include "modules/m_time.h"
 #include "commands.h"
 #include "../command_router.h"
 
@@ -17,14 +18,26 @@
 static void set_rtc(Trx_SetRTC_Args const* args)
 {
 	uint32_t epoch = args->epoch;
-	TRACE_DEBUG("set time to epoch: %" PRIu32 "\n", epoch);
-	// TODO: set time
+	int r = Time_getUnixEpoch(&epoch);
+	if (r == 0) {
+		printf("\nepoch was: ");
+		m_time_print_epoch(epoch);
+	}
+
+	TRACE_DEBUG("\r\nset time to epoch: %" PRIu32 "\n", epoch);
+	m_time_settime(epoch);
+	int r = Time_getUnixEpoch(&epoch);
+	if (r == 0) {
+		printf("\nepoch now: ");
+		m_time_print_epoch(epoch);
+	}
+	printf("\n\n");
 }
 
 static void ping(Trx_Ping_Args const* args)
 {
 	int len = args->message_length;
-	TRACE_DEBUG("Ping: %.*s\r\n", len, args->message);
+	TRACE_DEBUG("\r\nPing: %.*s\r\n", len, args->message);
 	// TODO: send pong
 }
 

@@ -77,9 +77,11 @@ void taskMain()
 	xTaskGenericCreate(taskTestMain, (const signed char*)"taskTestMain", 4096, NULL, configMAX_PRIORITIES-2, &taskTestMainHandle, NULL, NULL);
 #endif
 
+	TRACE_INFO("KFQ14 Flight Software Ready");
 	for (;;) {
-		delay_ms(200);
 		trxvu_logic();
+
+		delay_ms(200);
 	}
 
 	infinite_looper();

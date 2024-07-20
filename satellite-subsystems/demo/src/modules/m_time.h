@@ -8,15 +8,18 @@
 #ifndef MODULES_M_TIME_H_
 #define MODULES_M_TIME_H_
 
+#include <stdint.h>
 #include <hal/boolean.h>
 #include <hal/Timing/Time.h>
 
 
 Boolean m_init_time(void);
 
-void print_time(Time const *time);
+Boolean m_time_settime(uint32_t epoch);
 
-void print_epoch(unsigned int epoch);
+void m_time_print_time(Time const *time);
+
+void m_time_print_epoch(unsigned int epoch);
 
 
 #endif /* MODULES_M_TIME_H_ */

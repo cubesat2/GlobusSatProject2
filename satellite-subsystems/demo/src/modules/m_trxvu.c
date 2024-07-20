@@ -121,8 +121,8 @@ static void _WatchDogKickTask(void *parameters)
 	}
 }
 
-static unsigned char from_callsign[] = "T14KFQ";
-static unsigned char to_callsign[] =   "TAUWKS";
+static unsigned char from_callsign[] = "KFQ14";
+static unsigned char to_callsign[] =   "TAUWS";
 
 Boolean m_trxvu_init(void)
 {

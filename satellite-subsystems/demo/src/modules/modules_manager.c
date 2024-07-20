@@ -37,7 +37,7 @@ static Boolean init_i2c(void)
 
 Boolean mm_init()
 {
-	Boolean result = m_init_time();
+	Boolean result = m_time_init();
 
 	result &= init_i2c();
 	result &= m_config_init();

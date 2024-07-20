@@ -35,7 +35,7 @@ static Boolean init_time(void)
 	int r = Time_start(&time, syncInterval);
 	if (r == 0) {
 		printf("Time initialized\n");
-		print_time(&time);
+		m_time_print_time(&time);
 	} else {
 		printf("Error initing time %d\n", r);
 	}
@@ -62,7 +62,7 @@ static Boolean get_current_time(void)
 			Time time;
 			Time_get(&time);
 			printf("Time: ");
-			print_time(&time);
+			m_time_print_time(&time);
 			printf("\r\n");
 		} else {
 			printf("get time failed\n");
@@ -81,7 +81,7 @@ static Boolean set_current_time(void)
 
 	Time time;
 	Time_get(&time);
-	print_time(&time);
+	m_time_print_time(&time);
 	printf("\r\n");
 
 	unsigned int epoch_time = INPUT_GetUINT32("Enter new epoch:");
@@ -89,7 +89,7 @@ static Boolean set_current_time(void)
 	if (r == 0) {
 		printf("Time set to:");
 		Time_get(&time);
-		print_time(&time);
+		m_time_print_time(&time);
 		printf("\n");
 	} else {
 		printf("Error setting time: %d\n", r);
