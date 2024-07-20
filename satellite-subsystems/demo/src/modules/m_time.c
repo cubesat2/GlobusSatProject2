@@ -32,9 +32,9 @@ Boolean m_time_init(void)
 Boolean m_time_settime(uint32_t epoch)
 {
 
-	unsigned int syncInterval = 60;
+	unsigned int unix_epoch = epoch;
 
-	int result = Time_setUnixEpoch(epoch);
+	int result = Time_setUnixEpoch(unix_epoch);
 	if(result != 0) {
 		TRACE_FATAL("\n\r Set Time failed: %d! \n\r", result);
 		return FALSE;
