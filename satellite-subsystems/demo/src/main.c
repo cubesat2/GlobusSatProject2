@@ -3,9 +3,16 @@
  *      Author: Akhil
  */
 
+//#define DEBUG_BAUD_RATE 115200
+#define DEBUG_BAUD_RATE 2000000
 
+#define  OBC_LAUNCH_TEST_TASK
+
+#ifdef OBC_LAUNCH_TEST_TASK
 #include "tests/all_tests.h"
+#endif
 
+#include "modules/m_ids.h"
 #include "modules/modules_manager.h"
 #include "modules/m_trxvu.h"
 #include "utils/timeutils.h"
@@ -48,7 +55,6 @@
 	#define MAIN_TRACE_FATAL		TRACE_FATAL
 #endif
 
-#define  OBC_LAUNCH_TEST_TASK
 
 void infinite_looper()
 {
@@ -87,10 +93,6 @@ void taskMain()
 	infinite_looper();
 }
 
-
-
-//#define DEBUG_BAUD_RATE 115200
-#define DEBUG_BAUD_RATE 2000000
 
 int main()
 {

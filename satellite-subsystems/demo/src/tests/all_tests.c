@@ -8,6 +8,7 @@
 
 #include "tests/all_tests.h"
 
+#include "modules/m_ids.h"
 #include "tests/test_common.h"
 #include "Demos/demos.h"
 #include "tests/system_c_tests.h"
@@ -33,7 +34,7 @@ static MenuAction main_menu[] = {
 
 Boolean all_tests(void)
 {
-	TRACE_INFO("KFQ14 testing task ready!\r\n\r\n\tQubeSat Flight Software Testing Software.\r\n");
+	TRACE_INFO(SAT_CALLSIGN " testing task ready!\r\n\r\n\tQubeSat Flight Software Testing Software.\r\n");
 	MenuDisplay(main_menu);
 	return TRUE;
 }
