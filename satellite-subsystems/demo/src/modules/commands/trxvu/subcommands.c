@@ -55,7 +55,7 @@ Boolean transmit_spl_packet(SPL_Packet const* packet)
 
 static void ping(SPL_Packet const* args)
 {
-	Trx_Ping_Args const* params = (Trx_Ping_Args const*) args;
+	Trx_Ping_Args const* params = (Trx_Ping_Args const*) args->data;
 	int len = params->message_length;
 	TRACE_DEBUG("\r\nPing: %.*s\r\n", len, params->message);
 
