@@ -7,9 +7,9 @@
 
 #include <stdio.h>
 #include <inttypes.h>
+#include <modules/commands/trxvu/subcommands.h>
 
 #include "command_router.h"
-#include "trxvu/commands.h"
 #include "eps/commands.h"
 
 void no_such_command(SPL_Packet const* packet)

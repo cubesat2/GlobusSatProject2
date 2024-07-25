@@ -24,6 +24,11 @@ typedef struct __attribute__ ((__packed__)) Trx_Ping_Args {
 	char message[];
 } Trx_Ping_Args;
 
+typedef struct __attribute__ ((__packed__)) Trx_Ping_Ack {
+	uint8_t message_length;
+	char message[];
+} Trx_Ping_Ack;
+
 //             Cmd  SubCommand
 // ID:14       TRX  SETTIME
 // 0E 00 00 00 00   08       04 27 AF 9B 66
