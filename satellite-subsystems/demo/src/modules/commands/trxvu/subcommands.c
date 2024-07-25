@@ -61,8 +61,7 @@ static void ping(SPL_Packet const* args)
 
 	SPL_Packet packet;
 	assemble_spl_packet(&packet, args->header.ID, args->header.cmd_type, args->header.cmd_subtype, 6, "Pong!!");
-
-
+	transmit_spl_packet(&packet);
 }
 
 void trxvu_command_router(SPL_Packet const* packet)
