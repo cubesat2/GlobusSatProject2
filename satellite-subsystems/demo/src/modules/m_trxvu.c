@@ -7,7 +7,7 @@
 
 #include "m_trxvu.h"
 #include "spl_command_parser.h"
-
+#include "utils/timeutils.h"
 #include "config/i2c_address.h"
 
 #include <satellite-subsystems/IsisTRXVU.h>
@@ -46,6 +46,42 @@ Boolean trxvu_deactivate_responder(void)
 	return 0 == I2C_write(TRXVU_TC_ADDRESS, cmd, sizeof(cmd));
 }
 
+static Boolean gs_ShutdownResponderTaskActive = FALSE;
+static void ShutdownResponderTask(void *parameters)
+{
+	unsigned int minutes = *(unsigned int*) parameters;
+	delay_ms(1000*60*minutes);
+	if (trxvu_deactivate_responder()){
+		TRACE_INFO("Responder deactivated by task.\r\n");
+	}
+	gs_ShutdownResponderTaskActive = FALSE;
+	vTaskDelete(NULL);
+}
+
+Boolean trxvu_activate_responder_minutes(unsigned int minutes)
+{
+	if (gs_ShutdownResponderTaskActive) {
+		TRACE_INFO("Shutdown RSS Task is already active");
+		return FALSE;
+	}
+
+	// DOC: ISIS.TrxVU.ICD.001_v1.6 - TRXVU Interface Control Document_revD
+	// DOC: ISIS-TRXVU-ICD-00001A-ANNEX_A_TRXVU_transponder_mode-1_0
+	static unsigned int time_active;
+	static xTaskHandle deactivateResponderTaskHandle = NULL;
+	time_active = minutes;
+	if (trxvu_activate_responder()){
+		TRACE_INFO("Responder is activated");
+		xTaskCreate(ShutdownResponderTask,(signed char*)"Responder Shutdown", 256, &time_active, tskIDLE_PRIORITY, &deactivateResponderTaskHandle );
+
+	} else {
+		TRACE_ERROR("Could not turn responder ON.");
+		return FALSE;
+	}
+	return TRUE;
+}
+
+
 Boolean trxvu_set_responder_rssi_threshold(uint16_t rssi)
 {
 	unsigned char cmd[] = {SET_RSSI_THRESHOLD, rssi>>8, 0, 0};
@@ -53,6 +89,7 @@ Boolean trxvu_set_responder_rssi_threshold(uint16_t rssi)
 	cmd[2] = rssi & 0xFF;
 	return 0 == I2C_write(TRXVU_TC_ADDRESS, cmd, sizeof(cmd));
 }
+
 
 Boolean trxvu_set_ax25_bitrate(ISIStrxvuBitrate bitrate)
 {

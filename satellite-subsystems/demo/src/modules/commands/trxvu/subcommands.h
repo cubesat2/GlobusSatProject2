@@ -11,8 +11,9 @@
 #include "modules/spl_packet.h"
 
 typedef enum __attribute__ ((__packed__)) TRXVU_Command_SubType {
-	TRXVU_CMD_PING				= 0,
-	TRXVU_CMD_SETTIME			= 8,
+	TRXVU_CMD_PING						= 0,
+	TRXVU_CMD_ACTIVATE_RESPONDER		= 1,
+	TRXVU_CMD_SETTIME					= 8,
 } TRXVU_Command_SubType;
 
 typedef struct __attribute__ ((__packed__)) Trx_SetRTC_Args {

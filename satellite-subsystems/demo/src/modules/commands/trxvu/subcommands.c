@@ -6,6 +6,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <inttypes.h>
 #include <at91/utility/trace.h>
 
@@ -27,8 +28,10 @@ static void set_rtc(SPL_Packet const* args)
 		printf("\r\n");
 	}
 
-	TRACE_DEBUG("\r\nset time to epoch: %" PRIu32 "\n", params->epoch);
-	m_time_settime(params->epoch);
+	TRACE_DEBUG("\r\nset time to arg->epoch: %" PRIu32 "\n", params->epoch);
+	epoch = params->epoch;
+	TRACE_DEBUG("\r\nset time to epoch: %u\n", epoch);
+	m_time_settime(epoch);
 	r = Time_getUnixEpoch(&epoch);
 	if (r == 0) {
 		printf("\nepoch now: ");
@@ -38,19 +41,11 @@ static void set_rtc(SPL_Packet const* args)
 	printf("\n\n");
 }
 
-void assemble_spl_packet(SPL_Packet* packet, uint32_t id, uint8_t type, uint8_t subtype, uint16_t data_length, uint8_t const* data)
+static void activate_responder(SPL_Packet const* args)
 {
-	packet->header.ID = id;
-	packet->header.cmd_type = type;
-	packet->header.cmd_subtype = subtype;
-	packet->header.length = data_length;
-	memcpy(packet->data, data, data_length);
-}
-
-Boolean transmit_spl_packet(SPL_Packet const* packet)
-{
-	uint8_t packet_len = sizeof(packet->header) + packet->header.length;
-	return trxvu_send_buffer((uint8_t const*)packet, packet_len);
+	unsigned int minutes = *(unsigned int const*) args->data;
+	TRACE_INFO("Got command to activate responder for %u minutes", minutes);
+	TRACE_INFO("Activating responder for %u minutes", minutes);
 }
 
 static void ping(SPL_Packet const* args)
@@ -59,16 +54,25 @@ static void ping(SPL_Packet const* args)
 	int len = params->message_length;
 	TRACE_DEBUG("\r\nPing: %.*s\r\n", len, params->message);
 
-	SPL_Packet packet;
-	assemble_spl_packet(&packet, args->header.ID, args->header.cmd_type, args->header.cmd_subtype, 6, "Pong!!");
-	transmit_spl_packet(&packet);
+	SPL_Packet outgoing_packet;
+	uint8_t message[] = ">> Pong!!";
+	assemble_spl_reply_packet(&outgoing_packet, &args->header, sizeof(message), message);
+	transmit_spl_packet(&outgoing_packet);
 }
 
 void trxvu_command_router(SPL_Packet const* packet)
 {
+	if (packet->header.cmd_type != CMD_TYPE_TRXVU) {
+		TRACE_ERROR("should only get trxvu commands here");
+		return;
+	}
+
 	switch (packet->header.cmd_subtype) {
 	case TRXVU_CMD_SETTIME:
 		set_rtc(packet);
+		break;
+	case TRXVU_CMD_ACTIVATE_RESPONDER:
+		activate_responder(packet);
 		break;
 	case TRXVU_CMD_PING:
 		ping(packet);
