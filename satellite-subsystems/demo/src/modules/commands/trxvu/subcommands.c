@@ -31,7 +31,9 @@ static void set_rtc(SPL_Packet const* args)
 	TRACE_DEBUG("\r\nset time to arg->epoch: %" PRIu32 "\n", params->epoch);
 	epoch = params->epoch;
 	TRACE_DEBUG("\r\nset time to epoch: %u\n", epoch);
-	m_time_settime(epoch);
+	if (m_time_settime(epoch)) {
+		spl_packet_send_reply_message(&args->header, "Time Set!");
+	}
 	r = Time_getUnixEpoch(&epoch);
 	if (r == 0) {
 		printf("\nepoch now: ");
@@ -43,9 +45,14 @@ static void set_rtc(SPL_Packet const* args)
 
 static void activate_responder(SPL_Packet const* args)
 {
-	unsigned int minutes = *(unsigned int const*) args->data;
-	TRACE_INFO("Got command to activate responder for %u minutes", minutes);
-	TRACE_INFO("Activating responder for %u minutes", minutes);
+	typedef struct __attribute__ ((__packed__)) Params {
+		uint32_t minutes;
+	} Params;
+	Params const* params = (Params const*) args->data;
+	TRACE_INFO("Got command to activate responder for %u minutes", params->minutes);
+	if (trxvu_activate_responder_minutes(params->minutes)){
+		spl_packet_send_reply_message(&args->header, "responder activated! can we transmit this?");
+	}
 }
 
 static void ping(SPL_Packet const* args)
@@ -54,10 +61,7 @@ static void ping(SPL_Packet const* args)
 	int len = params->message_length;
 	TRACE_DEBUG("\r\nPing: %.*s\r\n", len, params->message);
 
-	SPL_Packet outgoing_packet;
-	uint8_t message[] = ">> Pong!!";
-	assemble_spl_reply_packet(&outgoing_packet, &args->header, sizeof(message), message);
-	transmit_spl_packet(&outgoing_packet);
+	spl_packet_send_reply_message(&args->header, ">>Pong!!!");
 }
 
 void trxvu_command_router(SPL_Packet const* packet)
