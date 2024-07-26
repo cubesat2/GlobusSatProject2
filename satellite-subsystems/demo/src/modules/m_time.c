@@ -12,6 +12,8 @@
 #include <at91/utility/trace.h>
 #include <stdio.h>
 
+#define TIME_EPOCH_NOT_BEFORE  	946684800  // Cant set time before Saturday, January 1, 2000 12:00:00 AM
+
 Boolean m_time_init(void)
 {
 	// Monday, January 1, 2024 12:00:00 PM
@@ -29,12 +31,13 @@ Boolean m_time_init(void)
 }
 
 
-Boolean m_time_settime(uint32_t epoch)
+Boolean m_time_settime(unsigned int epoch)
 {
-
-	unsigned int unix_epoch = epoch;
-
-	int result = Time_setUnixEpoch(unix_epoch);
+	if (epoch < TIME_EPOCH_NOT_BEFORE) {
+		TRACE_ERROR("Can't set time to before %d\n", TIME_EPOCH_NOT_BEFORE);
+		return FALSE;
+	}
+	int result = Time_setUnixEpoch(epoch);
 	if(result != 0) {
 		TRACE_FATAL("\n\r Set Time failed: %d! \n\r", result);
 		return FALSE;

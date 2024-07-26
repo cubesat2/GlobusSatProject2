@@ -98,6 +98,41 @@ TrxvuRxFrame* trxvu_get_frame()
 	return NULL;
 }
 
+void assemble_spl_packet(SPL_Packet* packet, uint32_t id, uint8_t type, uint8_t subtype, uint16_t data_length, uint8_t const* data)
+{
+	packet->header.id = id;
+	packet->header.cmd_type = type;
+	packet->header.cmd_subtype = subtype;
+	packet->header.length = data_length;
+	size_t len = data_length;
+	if (len > sizeof(packet->data)) {
+		TRACE_INFO("truncated message %u to fit SPL frame", len);;
+		len = sizeof(packet->data);
+	};
+	memcpy(packet->data, data, len);
+}
+
+void assemble_spl_reply_packet(SPL_Packet* packet, SPL_Header const* header, uint16_t data_length, uint8_t const* data)
+{
+	packet->header.id = header->id;
+	packet->header.cmd_type = header->cmd_type;
+	packet->header.cmd_subtype = header->cmd_subtype;
+	packet->header.length = data_length;
+	size_t len = data_length;
+	if (len > sizeof(packet->data)) {
+		TRACE_INFO("truncated message %u to fit SPL frame", len);;
+		len = sizeof(packet->data);
+	};
+	memcpy(packet->data, data, len);
+}
+
+Boolean transmit_spl_packet(SPL_Packet const* packet)
+{
+	uint8_t packet_len = sizeof(packet->header) + packet->header.length;
+	return trxvu_send_buffer((uint8_t const*)packet, packet_len);
+}
+
+
 void trxvu_logic(void)
 {
 	int frames = trxvu_count_incoming_frames();

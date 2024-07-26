@@ -15,7 +15,7 @@
 void no_such_command(SPL_Packet const* packet)
 {
 	if (packet) {
-		printf("SPL for ID:%" PRIu32 "\n", packet->header.ID);
+		printf("SPL for ID:%d\n", packet->header.id);
 		printf("Command Type: %d \n", packet->header.cmd_type);
 		printf("     Subtype: %d \n", packet->header.cmd_subtype);
 		printf("Params Bytes: %d \n", packet->header.length);

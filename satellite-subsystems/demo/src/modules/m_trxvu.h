@@ -8,6 +8,8 @@
 #ifndef MODULES_M_TRXVU_H_
 #define MODULES_M_TRXVU_H_
 
+#include "modules/spl_packet.h"
+
 #include <stdint.h>
 #include <hal/boolean.h>
 #include <satellite-subsystems/IsisTRXVU.h>
@@ -82,6 +84,36 @@ int trxvu_count_incoming_frames(void);
  */
 TrxvuRxFrame* trxvu_get_frame();
 
+/**
+ * Assemble SPL Packet to be sent by trxvu
+ * @param packet			pointer to destination SPL_Packet
+ * @param id			sat id
+ * @param type			type of packet
+ * @param subtype		subtype of packet
+ * @param data_length	length of data for this cmd
+ * @param data			byte array holding the data to be sent
+ */
+void assemble_spl_packet(SPL_Packet* packet, uint32_t id, uint8_t type, uint8_t subtype, uint16_t data_length, uint8_t const* data);
+
+/**
+ * Send a reply packet
+ * @param packet			pointer to destination SPL_Packet
+ * @param header			pointer to header of original command we are sending ack for
+ * @param data_length	length of data
+ * @param data			byte array holding the data
+ */
+void assemble_spl_reply_packet(SPL_Packet* packet, SPL_Header const* header, uint16_t data_length, uint8_t const* data);
+
+/**
+ * Transmit SPL packet using the trxvu default call sign
+ * @param packet
+ * @return TRUE of success
+ */
+Boolean transmit_spl_packet(SPL_Packet const* packet);
+
+/**
+ * Implements periodic TRXVU logic for handling incoming commands and beacon
+ */
 void trxvu_logic(void);
 
 #endif /* MODULES_M_TRXVU_H_ */

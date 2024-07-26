@@ -10,7 +10,6 @@
 
 
 #include <stdint.h>
-#include "modules/m_trxvu.h"
 
 typedef enum __attribute__ ((__packed__)) SPL_Command_Type {
 	CMD_TYPE_TRXVU			= 0,
@@ -36,7 +35,11 @@ typedef struct __attribute__ ((__packed__)) SetNormal_ModeThresholds {
 } SPL_SetNormal_ModeThresholds;
 
 typedef struct __attribute__ ((__packed__)) SPL_Header {
-	uint32_t ID;
+	struct __attribute__ ((__packed__)) {
+		uint32_t id : 8;
+		uint32_t sequence: 24;
+	};
+//	uint32_t ID;
 	uint8_t cmd_type;
 	uint8_t cmd_subtype;
 	uint16_t length;

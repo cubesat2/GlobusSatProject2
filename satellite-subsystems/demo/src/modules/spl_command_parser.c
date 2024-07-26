@@ -27,7 +27,7 @@ void spl_parse_command(TrxvuRxFrame* frame)
 	}
 
 	SPL_Packet* packet = (SPL_Packet*) frame->framedata;
-	if (packet->header.ID != SAT_MYID && packet->header.ID != SAT_ALLID) {
+	if (packet->header.id != SAT_MYID && packet->header.id != SAT_ALLID) {
 		TRACE_DEBUG("Packet not for us");
 		return;
 	}

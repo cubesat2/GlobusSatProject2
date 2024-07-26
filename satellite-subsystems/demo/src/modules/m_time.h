@@ -13,9 +13,9 @@
 #include <hal/Timing/Time.h>
 
 
-Boolean m_init_time(void);
+Boolean m_time_init(void);
 
-Boolean m_time_settime(uint32_t epoch);
+Boolean m_time_settime(unsigned int epoch);
 
 void m_time_print_time(Time const *time);
 
