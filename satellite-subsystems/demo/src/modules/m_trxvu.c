@@ -73,7 +73,6 @@ Boolean trxvu_activate_responder_minutes(unsigned int minutes)
 	if (trxvu_activate_responder()){
 		TRACE_INFO("Responder is activated");
 		xTaskCreate(ShutdownResponderTask,(signed char*)"Responder Shutdown", 256, &time_active, tskIDLE_PRIORITY, &deactivateResponderTaskHandle );
-
 	} else {
 		TRACE_ERROR("Could not turn responder ON.");
 		return FALSE;

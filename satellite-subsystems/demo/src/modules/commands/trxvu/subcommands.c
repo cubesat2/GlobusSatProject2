@@ -49,7 +49,7 @@ static void activate_responder(SPL_Packet const* args)
 		uint32_t minutes;
 	} Params;
 	Params const* params = (Params const*) args->data;
-	TRACE_INFO("Got command to activate responder for %u minutes", params->minutes);
+	TRACE_INFO("Got command to activate responder for " PRIu32 " minutes", params->minutes);
 	if (trxvu_activate_responder_minutes(params->minutes)){
 		spl_packet_send_reply_message(&args->header, "responder activated! can we transmit this?");
 	}
