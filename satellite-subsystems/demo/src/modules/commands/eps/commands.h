@@ -8,7 +8,7 @@
 #ifndef MODULES_COMMANDS_EPS_COMMANDS_H_
 #define MODULES_COMMANDS_EPS_COMMANDS_H_
 
-#include "modules/spl_packet.h"
+#include "modules/spl/spl_packet.h"
 
 typedef enum __attribute__ ((__packed__)) EPS_Command_SubType {
 	EPS_CMD_GET_VBAT				= 0,

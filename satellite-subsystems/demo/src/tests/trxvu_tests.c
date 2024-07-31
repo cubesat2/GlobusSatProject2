@@ -8,9 +8,9 @@
 #include "tests/trxvu_tests.h"
 #include "tests/test_common.h"
 
-#include "modules/m_gomeps.h"
-#include "modules/m_trxvu.h"
-#include "modules/spl_command_parser.h"
+#include "modules/eps/m_gomeps.h"
+#include "modules/trxvu/m_trxvu.h"
+#include "modules/spl/spl_command_parser.h"
 
 #include "utils/input.h"
 #include "utils/timeutils.h"

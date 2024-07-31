@@ -8,7 +8,7 @@
 #include "tests/antenna_tests.h"
 #include "tests/test_common.h"
 
-#include "modules/m_antenna.h"
+#include "modules/antenna/m_antenna.h"
 
 #include <stdio.h>
 

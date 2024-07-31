@@ -8,7 +8,7 @@
 #ifndef MODULES_SPL_COMMAND_PARSER_H_
 #define MODULES_SPL_COMMAND_PARSER_H_
 
-#include <modules/m_trxvu.h>
+#include <modules/trxvu/m_trxvu.h>
 
 void spl_parse_command(TrxvuRxFrame* frame);
 

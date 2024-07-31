@@ -9,7 +9,7 @@
 #include "tests/fram_tests.h"
 #include "tests/test_common.h"
 
-#include "modules/m_configurations.h"
+#include "modules/fram/m_configurations.h"
 
 #include "utils/input.h"
 #include "utils/timeutils.h"

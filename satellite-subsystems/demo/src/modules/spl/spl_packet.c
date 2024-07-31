@@ -7,7 +7,7 @@
 
 #include "spl_packet.h"
 #include "utils/timeutils.h"
-#include "modules/m_trxvu.h"
+#include "modules/trxvu/m_trxvu.h"
 
 #include <at91/utility/trace.h>
 

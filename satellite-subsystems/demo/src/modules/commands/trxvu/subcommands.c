@@ -10,9 +10,9 @@
 #include <inttypes.h>
 #include <at91/utility/trace.h>
 
-#include "modules/spl_packet.h"
-#include "modules/m_time.h"
-#include "modules/m_trxvu.h"
+#include "modules/spl/spl_packet.h"
+#include "modules/time_keeper/m_time.h"
+#include "modules/trxvu/m_trxvu.h"
 
 #include "modules/commands/trxvu/subcommands.h"
 #include "modules/commands/command_router.h"

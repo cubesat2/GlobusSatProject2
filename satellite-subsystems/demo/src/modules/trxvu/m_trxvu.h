@@ -8,7 +8,7 @@
 #ifndef MODULES_M_TRXVU_H_
 #define MODULES_M_TRXVU_H_
 
-#include "modules/spl_packet.h"
+#include "modules/spl/spl_packet.h"
 
 #include <stdint.h>
 #include <hal/boolean.h>

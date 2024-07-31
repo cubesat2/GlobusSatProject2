@@ -8,7 +8,7 @@
 #include "tests/solar_panel_tests.h"
 #include "tests/test_common.h"
 
-#include "modules/m_solar_panels.h"
+#include "modules/solar_panels/m_solar_panels.h"
 
 
 static Boolean get_solar_panels_sensor_state(void)

@@ -7,9 +7,9 @@
 
 #include "spl_command_parser.h"
 
-#include "m_ids.h"
-#include "spl_packet.h"
-#include "commands/command_router.h"
+#include "modules/m_ids.h"
+#include "modules/spl/spl_packet.h"
+#include "modules/commands/command_router.h"
 
 #include <stdio.h>
 #include <at91/utility/trace.h>

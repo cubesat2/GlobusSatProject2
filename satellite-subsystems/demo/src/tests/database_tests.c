@@ -8,8 +8,8 @@
 #include "tests/database_tests.h"
 #include "tests/test_common.h"
 
-#include "modules/m_db.h"
-#include "modules/m_time.h"
+#include "modules/db/m_db.h"
+#include "modules/time_keeper/m_time.h"
 
 #include "utils/input.h"
 #include "utils/timeutils.h"

@@ -14,7 +14,7 @@
 
 #include "modules/m_ids.h"
 #include "modules/modules_manager.h"
-#include "modules/m_trxvu.h"
+#include "modules/trxvu/m_trxvu.h"
 #include "utils/timeutils.h"
 #include "utils/menu_selection.h"
 

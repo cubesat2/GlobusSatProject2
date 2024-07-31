@@ -8,7 +8,7 @@
 #include "tests/gom_eps_tests.h"
 #include "tests/test_common.h"
 
-#include "modules/m_gomeps.h"
+#include "modules/eps/m_gomeps.h"
 #include "utils/menu_selection.h"
 #include "utils/error_report.h"
 

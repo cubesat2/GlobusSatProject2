@@ -6,7 +6,7 @@
  */
 
 #include "m_trxvu.h"
-#include "spl_command_parser.h"
+#include "modules/spl/spl_command_parser.h"
 #include "utils/timeutils.h"
 #include "config/i2c_address.h"
 

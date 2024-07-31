@@ -8,7 +8,7 @@
 #ifndef MODULES_COMMANDS_TRXVU_COMMANDS_H_
 #define MODULES_COMMANDS_TRXVU_COMMANDS_H_
 
-#include "modules/spl_packet.h"
+#include "modules/spl/spl_packet.h"
 
 typedef enum __attribute__ ((__packed__)) TRXVU_Command_SubType {
 	TRXVU_CMD_PING						= 0,

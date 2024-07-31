@@ -7,14 +7,14 @@
 
 #include "modules_manager.h"
 
-#include "m_configurations.h"
-#include "m_trxvu.h"
-#include "m_gomeps.h"
-#include "m_solar_panels.h"
-#include "m_antenna.h"
-#include "m_filesystem.h"
-#include "m_time.h"
-#include "m_db.h"
+#include "modules/fram/m_configurations.h"
+#include "trxvu/m_trxvu.h"
+#include "modules/eps/m_gomeps.h"
+#include "modules/solar_panels/m_solar_panels.h"
+#include "modules/antenna/m_antenna.h"
+#include "modules/fat_fs/m_filesystem.h"
+#include "modules/time_keeper/m_time.h"
+#include "modules/db/m_db.h"
 
 #include <hal/Drivers/I2C.h>
 #include <at91/utility/trace.h>
