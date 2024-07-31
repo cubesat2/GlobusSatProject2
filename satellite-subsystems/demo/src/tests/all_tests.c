@@ -6,9 +6,9 @@
  */
 
 
+#include <modules/sat_id.h>
 #include "tests/all_tests.h"
 
-#include "modules/m_ids.h"
 #include "tests/test_common.h"
 #include "Demos/demos.h"
 #include "tests/system_c_tests.h"

@@ -12,7 +12,7 @@
 #include "tests/all_tests.h"
 #endif
 
-#include "modules/m_ids.h"
+#include <modules/sat_id.h>
 #include "modules/modules_manager.h"
 #include "modules/trxvu/m_trxvu.h"
 #include "utils/timeutils.h"
