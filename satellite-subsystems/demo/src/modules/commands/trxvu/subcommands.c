@@ -30,7 +30,6 @@ static void set_rtc(SPL_Packet const* args)
 
 	TRACE_DEBUG("\r\nset time to arg->epoch: %" PRIu32 "\n", params->epoch);
 	epoch = params->epoch;
-	TRACE_DEBUG("\r\nset time to epoch: %u\n", epoch);
 	if (m_time_settime(epoch)) {
 		spl_packet_send_reply_message(&args->header, "Time Set!");
 	}
