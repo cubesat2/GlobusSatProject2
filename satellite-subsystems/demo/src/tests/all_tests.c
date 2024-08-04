@@ -34,7 +34,7 @@ static MenuAction main_menu[] = {
 
 Boolean all_tests(void)
 {
-	TRACE_INFO(SAT_CALLSIGN " testing task ready!\r\n\r\n\tQubeSat Flight Software Testing Software.\r\n");
+	TRACE_INFO("%s testing task ready!\r\n\r\n\tQubeSat Flight Software Testing Software.\r\n", SAT_CALLSIGN );
 	MenuDisplay(main_menu);
 	return TRUE;
 }

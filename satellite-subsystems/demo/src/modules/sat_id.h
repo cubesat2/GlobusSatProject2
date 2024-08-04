@@ -11,7 +11,8 @@
 #define SAT_MYID	  		(14u)
 #define SAT_ALLID 		(0u)
 
-#define SAT_CALLSIGN 	"T14KFQ"
+extern unsigned const char SAT_CALLSIGN[];
+extern unsigned const char GROUNDSTATION[];
 
 
 #endif /* MODULES_SAT_ID_H_ */

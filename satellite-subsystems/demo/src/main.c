@@ -83,7 +83,7 @@ void taskMain()
 	xTaskGenericCreate(taskTestMain, (const signed char*)"taskTestMain", 4096, NULL, configMAX_PRIORITIES-2, &taskTestMainHandle, NULL, NULL);
 #endif
 
-	TRACE_INFO(SAT_CALLSIGN " Flight Software Ready");
+	TRACE_INFO("%s Flight Software Ready", SAT_CALLSIGN );
 	for (;;) {
 		trxvu_logic();
 
@@ -107,7 +107,7 @@ int main()
 	PIO_InitializeInterrupts(AT91C_AIC_PRIOR_LOWEST+4);
 	WDT_startWatchdogKickTask(10 / portTICK_RATE_MS, FALSE);
 
-	printf("\n\n" SAT_CALLSIGN " CubeSat Flight Software. built on %s at %s\n", __DATE__, __TIME__);
+	//printf("\n\n" SAT_CALLSIGN " CubeSat Flight Software. built on %s at %s\n", __DATE__, __TIME__);
 	printf("* Sat Subsys lib version %s.%s.%s built on %s at %s\n",
 			SatelliteSubsystemsVersionMajor, SatelliteSubsystemsVersionMinor, SatelliteSubsystemsVersionRevision,
 			SatelliteSubsystemsCompileDate, SatelliteSubsystemsCompileTime);

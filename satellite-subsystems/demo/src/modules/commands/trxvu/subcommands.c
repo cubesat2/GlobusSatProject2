@@ -20,26 +20,17 @@
 static void set_rtc(SPL_Packet const* args)
 {
 	Trx_SetRTC_Args const * params = (Trx_SetRTC_Args*) args->data;
-	unsigned int epoch = 0;
-	int r = Time_getUnixEpoch(&epoch);
-	if (r == 0) {
-		printf("\nepoch was: ");
-		m_time_print_epoch(epoch);
-		printf("\r\n");
-	}
-
 	TRACE_DEBUG("\r\nset time to arg->epoch: %" PRIu32 "\n", params->epoch);
-	epoch = params->epoch;
+
+	unsigned int epoch = params->epoch;
 	if (m_time_settime(epoch)) {
+		Time_getUnixEpoch(&epoch);
+		//TODO: send ack packet with epoch?
 		spl_packet_send_reply_message(&args->header, "Time Set!");
+	} else {
+		TRACE_ERROR("\r\nset time to arg->epoch: %" PRIu32 "failed\r\n", params->epoch);
+		spl_packet_send_reply_message(&args->header, "Time Not Set!");
 	}
-	r = Time_getUnixEpoch(&epoch);
-	if (r == 0) {
-		printf("\nepoch now: ");
-		m_time_print_epoch(epoch);
-		printf("\r\n");
-	}
-	printf("\n\n");
 }
 
 static void activate_responder(SPL_Packet const* args)

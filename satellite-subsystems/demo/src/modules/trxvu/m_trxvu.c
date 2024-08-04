@@ -5,11 +5,12 @@
  *      Author: Muhammad Zahalqa
  */
 
-#include "m_trxvu.h"
+#include "modules/trxvu/m_trxvu.h"
 #include "modules/spl/spl_command_parser.h"
 #include "utils/timeutils.h"
 #include "config/i2c_address.h"
 
+#include "modules/sat_id.h"
 #include <satellite-subsystems/IsisTRXVU.h>
 
 #include <freertos/FreeRTOS.h>
@@ -157,8 +158,8 @@ static void _WatchDogKickTask(void *parameters)
 	}
 }
 
-static unsigned char from_callsign[] = "KFQ14";
-static unsigned char to_callsign[] =   "TAUWS";
+//static unsigned char from_callsign[] = "KFQ14";
+//static unsigned char to_callsign[] =   "TAUWS";
 
 Boolean m_trxvu_init(void)
 {
@@ -185,8 +186,8 @@ Boolean m_trxvu_init(void)
 		return FALSE;
 	}
 
-	IsisTrxvu_tcSetDefToClSign(0, to_callsign);
-	IsisTrxvu_tcSetDefFromClSign(0, from_callsign);
+	IsisTrxvu_tcSetDefToClSign(0, GROUNDSTATION);
+	IsisTrxvu_tcSetDefFromClSign(0, SAT_CALLSIGN);
 
 	// Start watch dog kick task
 	xTaskCreate(_WatchDogKickTask,(signed char*)"TRXVU-WDT", 2048, NULL, tskIDLE_PRIORITY, &watchdogKickTaskHandle );

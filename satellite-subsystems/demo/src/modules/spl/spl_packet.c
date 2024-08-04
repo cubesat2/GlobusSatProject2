@@ -59,7 +59,7 @@ Boolean spl_packet_send_reply_message(SPL_Header const* header, char const* mess
 	uint16_t length = strlen(message);
 	spl_packet_assemble_reply(&outgoing_packet, header, length, (uint8_t const*)message);
 	Boolean r = spl_packet_transmit(&outgoing_packet);
-	if (r != TRUE) {
+	if (!r) {
 		TRACE_ERROR("failed to send reply message: %s", message);
 	}
 	return r;
