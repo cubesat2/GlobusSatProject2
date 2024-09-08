@@ -42,13 +42,13 @@ static Boolean write_eps_conig(void)
 
 static Boolean read_eps_conig(void)
 {
-	EPS_Params eps_params = { 0 };
+	struct EPS eps = {};
 
-	Boolean rv = m_config_read_eps(&eps_params);
+	Boolean rv = m_config_read_param(FRAM_BASE_ADDRESS, offsetof(FlightConfiguration, eps), &eps, sizeof(eps));
 	VERIFY(rv, "Reading EPS Config params to FRAM");
 
-	VERIFY(eps_params.v_normal_up == 7.6, "vBat Normal up is %f", eps_params.v_normal_up);
-	VERIFY(eps_params.v_safe_up == 7.1, "vBat Safe up is %f", eps_params.v_normal_up);
+	VERIFY(eps.v_normal_up == 7.6, "vBat Normal up is %f", eps.v_normal_up);
+	VERIFY(eps.v_safe_up == 7.1, "vBat Safe up is %f", eps.v_normal_up);
 
 	return TRUE;
 }
