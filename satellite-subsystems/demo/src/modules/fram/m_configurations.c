@@ -8,18 +8,13 @@
 
 #include "m_configurations.h"
 
+#include "config/flight_params.h"
 #include "config/i2c_address.h"
 
 #include <hal/errors.h>
 #include <hal/Storage/FRAM.h>
 #include <at91/utility/trace.h>
 
-
-enum FRAM_ADDRESS {
-	EPS_ADDRESS = 0x100,
-	BEACON_ADDRESS = EPS_ADDRESS + sizeof(EPS_Params),
-	TRXVUE_ADDREES = BEACON_ADDRESS + sizeof(Beacon_Params)
-};
 
 Boolean m_config_init(void)
 {
@@ -47,6 +42,26 @@ Boolean m_config_write_eps(EPS_Params const* eps_params)
 	int rv = FRAM_write((const unsigned char *)eps_params, EPS_ADDRESS, sizeof(EPS_Params));
 	if(rv != E_NO_SS_ERR && rv != E_IS_INITIALIZED) {
 		TRACE_ERROR("\n\r FRAM_read() failed; err=%d! Exiting ... \n\r", rv);
+		return FALSE;
+	}
+	return TRUE;
+}
+
+Boolean m_config_write_param(uint32_t address, uint32_t offset, void* data, uint32_t length)
+{
+	int rv = FRAM_write(data, address+offset, length);
+	if(rv != E_NO_SS_ERR && rv != E_IS_INITIALIZED) {
+		TRACE_ERROR("\n\r m_config_write_param() failed; err=%d! Exiting ... \n\r", rv);
+		return FALSE;
+	}
+	return TRUE;
+}
+
+Boolean m_config_read_param(uint32_t address, uint32_t offset, void* data, uint32_t length)
+{
+	int rv = FRAM_read(data, address+offset, length);
+	if(rv != E_NO_SS_ERR && rv != E_IS_INITIALIZED) {
+		TRACE_ERROR("\n\r m_config_read_param() failed; err=%d! Exiting ... \n\r", rv);
 		return FALSE;
 	}
 	return TRUE;

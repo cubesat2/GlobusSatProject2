@@ -17,6 +17,9 @@
 #include "modules/commands/trxvu/subcommands.h"
 #include "modules/commands/command_router.h"
 
+#include "config/flight_params.h"
+#include "modules/fram/m_configurations.h"
+
 static void set_rtc(SPL_Packet const* args)
 {
 	Trx_SetRTC_Args const * params = (Trx_SetRTC_Args*) args->data;
@@ -40,7 +43,10 @@ static void activate_responder(SPL_Packet const* args)
 	} Params;
 	Params const* params = (Params const*) args->data;
 	TRACE_INFO("Got command to activate responder for " PRIu32 " minutes", params->minutes);
-	if (trxvu_activate_responder_minutes(params->minutes)){
+	uint32_t minutes = params->minutes;
+	// max at 60 minutes
+	minutes = minutes <= 60 ? minutes : 60;
+	if (trxvu_activate_responder_minutes(minutes)){
 		spl_packet_send_reply_message(&args->header, "responder activated! can we transmit this?");
 	}
 }

@@ -44,4 +44,8 @@ Boolean m_config_read_eps(EPS_Params* eps_params);
 
 Boolean m_config_write_eps(EPS_Params const* eps_params);
 
+Boolean m_config_write_param(uint32_t address, uint32_t offset, void* data, uint32_t length);
+
+Boolean m_config_read_param(uint32_t address, uint32_t offset, void* data, uint32_t length);
+
 #endif /* MODULES_M_CONFIGURATIONS_H_ */

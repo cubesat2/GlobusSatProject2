@@ -11,6 +11,8 @@
 
 #include "modules/fram/m_configurations.h"
 
+#include "config/flight_params.h"
+
 #include "utils/input.h"
 #include "utils/timeutils.h"
 #include "utils/menu_selection.h"
@@ -18,19 +20,24 @@
 #include <hal/errors.h>
 #include <at91/utility/trace.h>
 
+#include <stddef.h>
+
 static Boolean write_eps_conig(void)
 {
-	EPS_Params eps_params = {
-			.v_normal_up = 7.6,
-			.v_normal_down = 7.4,
-			.v_safe_up = 7.1,
-			.v_safe_down = 7.0
+	struct EPS eps = {
+		.v_normal_up = 7.6,
+		.v_normal_down = 7.4,
+		.v_safe_up = 7.1,
+		.v_safe_down = 7.0
 	};
 
-	Boolean rv = m_config_write_eps(&eps_params);
+	g_flight_config.eps = eps;
+
+	Boolean rv = m_config_write_param(FRAM_BASE_ADDRESS, offsetof(FlightConfiguration, eps), &eps, sizeof(eps));
+//	Boolean rv = m_config_write_eps(&eps_params);
 	VERIFY(rv, "Writing EPS Config params to FRAM");
 
-	return TRUE;
+	return rv;
 }
 
 static Boolean read_eps_conig(void)
